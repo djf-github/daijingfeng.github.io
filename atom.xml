@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-11-12T03:20:49.957Z</updated>
+  <updated>2019-03-27T14:06:53.712Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>首页</title>
+    <link href="http://yoursite.com/posts/:/abbrlink.html"/>
+    <id>http://yoursite.com/posts/:/abbrlink.html</id>
+    <published>2019-03-27T13:28:49.000Z</published>
+    <updated>2019-03-27T14:06:53.712Z</updated>
+    
+    <content type="html"><![CDATA[<p>荒废学习了许久,这几天写项目的时候明显感觉到的生疏,</p><p>写个简单项目都磕磕碰碰的.</p><p>最近在写的是一个springboot项目,以前也写过一两个,但那时跟着视频一步一步跟着写的,写起来挺简单,也感觉自己会了.</p><p>这次自己独立写的时候感觉很多都不明白,遇到问题找百度,没错找百度,直接拷代码,但是自己懂不懂心理没点数嘛,看到代码都不知道所以然.</p><p>写这个随笔的目的,是为了检讨自己,也是为了自己以后能养成写博客的习惯,经常写一些学习总结什么的.万事开头难嘛,虽然只是写一篇随笔,但好歹踏出了第一步.</p><p>在此立个falg:</p><p>每周一篇</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;荒废学习了许久,这几天写项目的时候明显感觉到的生疏,&lt;/p&gt;
+&lt;p&gt;写个简单项目都磕磕碰碰的.&lt;/p&gt;
+&lt;p&gt;最近在写的是一个springboot项目,以前也写过一两个,但那时跟着视频一步一步跟着写的,写起来挺简单,也感觉自己会了.&lt;/p&gt;
+&lt;p&gt;这次自己独立写的时候感觉很
+      
+    
+    </summary>
+    
+    
+      <category term="随笔" scheme="http://yoursite.com/tags/%E9%9A%8F%E7%AC%94/"/>
+    
+  </entry>
   
   <entry>
     <title></title>
