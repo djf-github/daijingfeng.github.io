@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="mysql基本信息自带四个数据库  information_schema 存储数据库对象信息,如用户表信息,列信息,字符分区等等, 里面的信息不能动 performance_schema 存储数据库服务器性能参数 mysql 存储数据用户权限信息  sys 通过这个数据库可以快速的了解系统的元数据信息 就是通过视图的形式,把上面两个系统表结合起来 查询出更加令人理解的数据 数据类型int    :">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mysql 基本知识">
+<meta property="og:url" content="http://yoursite.com/2018/10/11/mysql/index.html">
+<meta property="og:site_name" content="我要养只大熊猫">
+<meta property="og:description" content="mysql基本信息自带四个数据库  information_schema 存储数据库对象信息,如用户表信息,列信息,字符分区等等, 里面的信息不能动 performance_schema 存储数据库服务器性能参数 mysql 存储数据用户权限信息  sys 通过这个数据库可以快速的了解系统的元数据信息 就是通过视图的形式,把上面两个系统表结合起来 查询出更加令人理解的数据 数据类型int    :">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-10-11T07:53:39.000Z">
+<meta property="article:modified_time" content="2020-03-08T18:22:55.880Z">
+<meta property="article:author" content="djf">
+<meta property="article:tag" content="Mysql">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2018/10/11/mysql/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>Mysql 基本知识 | 我要养只大熊猫</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">我要养只大熊猫</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/11/mysql/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="djf">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我要养只大熊猫">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Mysql 基本知识
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-10-11 15:53:39" itemprop="dateCreated datePublished" datetime="2018-10-11T15:53:39+08:00">2018-10-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-09 02:22:55" itemprop="dateModified" datetime="2020-03-09T02:22:55+08:00">2020-03-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Mysql/" itemprop="url" rel="index"><span itemprop="name">Mysql</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="mysql"><a href="#mysql" class="headerlink" title="mysql"></a>mysql</h1><h2 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h2><p>自带四个数据库</p>
+<p> information_schema</p>
+<p>存储数据库对象信息,如用户表信息,列信息,字符分区等等,</p>
+<p>里面的信息不能动</p>
+<p>performance_schema</p>
+<p>存储数据库服务器性能参数</p>
+<p>mysql</p>
+<p>存储数据用户权限信息</p>
+<p> sys</p>
+<p>通过这个数据库可以快速的了解系统的元数据信息</p>
+<p>就是通过视图的形式,把上面两个系统表结合起来</p>
+<p>查询出更加令人理解的数据</p>
+<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><p>int    :    整型</p>
+<p>double    :    浮点型    例如double(5,2)表示最多5位,其中两位小数  </p>
+<p>decimal    :    浮点型,在表示钱方面使用该类型  因为不会出现精度缺失问题</p>
+<p>char    :    固定长度字符串类型  char(255)为最大值</p>
+<p>varchar    :    可变长字符串类型 varchar(65535)为最大值</p>
+<p>text(clob)    :    字符串类型  用来存储大型字符串</p>
+<p>blob    :    大字节数据</p>
+<p>data    :    日期时间  格式为 yyyy-HH-dd</p>
+<p>time    :    时间类型 格式为 hh:mm:ss</p>
+<p>timestamp    :    时间戳类型  上面两个合起来</p>
+<h2 id="DDL-操作数据库"><a href="#DDL-操作数据库" class="headerlink" title="DDL(操作数据库)"></a>DDL(操作数据库)</h2><p>create database[if not exists] name [charset=utf8]</p>
+<p>drop database [if exists] name</p>
+<p>alter database name character set utf8</p>
+<h2 id="DDL-操作表"><a href="#DDL-操作表" class="headerlink" title="DDL(操作表)"></a>DDL(操作表)</h2><p>create table [if not exists] 表名(</p>
+<p>列名 列类型,</p>
+<p>列名 列类型</p>
+<p>);</p>
+<p>注意最后一行(最后一个括号前面)不能有逗号</p>
+<p>desc tablename  查看表结构</p>
+<p>drop table tablename  删除表</p>
+<p>修改表</p>
+<p>添加列</p>
+<p>alter table tablename add(列名,列类型)</p>
+<p>修改列类型</p>
+<p>alter table tablename modify 列名 列的新类型</p>
+<p>删除列</p>
+<p>alter table tablename  drop 列名</p>
+<p>修改表名</p>
+<p>alter table tablename   rename to newname</p>
+<h2 id="DML-修改记录"><a href="#DML-修改记录" class="headerlink" title="DML(修改记录)"></a>DML(修改记录)</h2><p>update 表名 set 列名=…where </p>
+<p>不加条件则修改整列</p>
+<p>运算符</p>
+<p>=    ,    !=    ,&lt;&gt;    ,&lt;    ,    &gt;    ,&gt;=    ,between…and</p>
+<p>in(…)    ,is null    ,    not,    or    ,and</p>
+<p>示例</p>
+<p>update tablename set age = age+1</p>
+<p>所有记录的年龄1</p>
+<p>update tablename set age = 1 where    age between 20    and    40</p>
+<p>update tablename set age =1 where    name in(“张三”,”李四”)</p>
+<p>where name is null  判断是否为null只能用这个</p>
+<p>不能使用 =null</p>
+<p>where not ….  取非</p>
+<h2 id="DCL-用户和权限"><a href="#DCL-用户和权限" class="headerlink" title="DCL(用户和权限)"></a>DCL(用户和权限)</h2><p>创建用户</p>
+<p>​    create user 用户名@ip地址 identified by ‘密码’;</p>
+<p>​    只能在指定ip地址登录</p>
+<p>​    @’%’    任意地址登录</p>
+<p>给用户授权</p>
+<p>​    grant 权限1,权限2… on 数据库.* to 用户名@ip地址</p>
+<p>​    grant all</p>
+<p>撤销授权</p>
+<p>​    revoke 权限1,权限2… on 数据库.* to 用户名@ip地址</p>
+<p>​    revoke all</p>
+<p>查看权限</p>
+<p>​    show grants for 用户名@ip地址</p>
+<p>删除用户</p>
+<p>​    drop  user 用户名@ip地址 </p>
+<h2 id="DQL-查询"><a href="#DQL-查询" class="headerlink" title="DQL(查询)"></a>DQL(查询)</h2><p>select distict * from tablename(去除重复 行)</p>
+<p>select name+100 from tablename(列运算  无法转换为数字时以0对待)</p>
+<p>select  ifnull&lt;name,0&gt;+100 from tablename</p>
+<p>(如果列明为name的值为null则使其以0 来运算  ,任意则与null运算为null)</p>
+<p>select concat(,name1,+’:’,name2) from tablename</p>
+<p>连接字符串</p>
+<p>select name1 as n from tablename</p>
+<p>给列取别名  as可以省略</p>
+<h4 id="模糊查询"><a href="#模糊查询" class="headerlink" title="模糊查询"></a>模糊查询</h4><p>select * from name like ‘-‘   匹配一个字符</p>
+<p>select * from name like ‘%’   匹配零个或多个字符</p>
+<p>排序</p>
+<p>order by  name asc  升序</p>
+<p>order by name  desc  降序</p>
+<p>order by name1 asc ,name2 desc  第一列升序 第二列降序</p>
+<h4 id="聚合函数"><a href="#聚合函数" class="headerlink" title="聚合函数"></a>聚合函数</h4><p>count(*)所有列 count(name)某一列  </p>
+<p>null不计算  *表示所有列都为null则不计数</p>
+<p>count里面接数字和*是相同意义</p>
+<p>sum()计算某一列所有值得和</p>
+<p>字符串或null当作0运算</p>
+<p>max()最大值</p>
+<p>min()最小值</p>
+<p>avg()平均值</p>
+<h4 id="分组查询"><a href="#分组查询" class="headerlink" title="分组查询"></a>分组查询</h4><p>group by name</p>
+<p>where … group by name  having …</p>
+<p>where表示分组前条件  having表示分组后条件</p>
+<p>limit num1,num2  从num1方开始 查找num2行记录</p>
+<h4 id="多表查询"><a href="#多表查询" class="headerlink" title="多表查询"></a>多表查询</h4><p>合并结果集</p>
+<p>要求两个结果集的列数和 列类型相同</p>
+<p>—union, 去除重复行</p>
+<p>—union all ,不去除重复行</p>
+<p>select * from cd</p>
+<p>union all</p>
+<p>select * from cd</p>
+<p>连接查询</p>
+<p>–内连接</p>
+<p>方言:</p>
+<p>select * from 表1 别名1,表2 别名2 where 别名1.name=b别名2.name</p>
+<p>标准:</p>
+<p>select * from 表1 别名1 inner join 表2 别名2 on 别名1.name=b别名2.name</p>
+<p>自然:</p>
+<p>select * from 表1 别名1 natural join 表2 别名2</p>
+<p>自然连接</p>
+<p>–外连接</p>
+<p>左外:</p>
+<p>select * from 表1 别名1 left outer join 表2 别名2 on 别名1.name=b别名2.name</p>
+<p>左外自然:  natural left outer join</p>
+<p>右外:</p>
+<p>select * from 表1 别名1 right outer join 表2 别名2 on 别名1.name=b别名2.name</p>
+<p>右外自然:  natural right outer join</p>
+<p>全外:</p>
+<p>mysql不支持 一般采用合并结果集的方式实现全外的效果</p>
+<h4 id="子查询"><a href="#子查询" class="headerlink" title="子查询"></a>子查询</h4><p>子查询出现的位置</p>
+<p>​    where后面作为条件存在</p>
+<p>​    from后面作为表存在</p>
+<p>单行单列</p>
+<p>=,    &gt;,    &lt;,    &gt;=,    &lt;=,    !=,</p>
+<p>多行单列</p>
+<p>in  all   any</p>
+<p>单行多列</p>
+<p>in</p>
+<p>多方多列</p>
+<p>出现在 from后面</p>
+<h2 id="编码问题"><a href="#编码问题" class="headerlink" title="编码问题"></a>编码问题</h2><p>show variables like ‘char%’  参看cahr开头的所有变量</p>
+<p>即查看所有编码</p>
+<h2 id="备份与恢复"><a href="#备份与恢复" class="headerlink" title="备份与恢复"></a>备份与恢复</h2><p>mysqldump -uroot -p密码 数据库名&gt;文件路径</p>
+<p>mysql -uroot -p密码 数据库名&lt;文件路径</p>
+<p>注意 这种方式备份的是数据库内容</p>
+<p>恢复的时候要先建一个数据库</p>
+<p>或者使用一个已有的数据库来覆盖</p>
+<p>登录之后</p>
+<p>source 文件路径</p>
+<h2 id="约束"><a href="#约束" class="headerlink" title="约束"></a>约束</h2><p>主键约束(唯一标识)</p>
+<p>—不能为空</p>
+<p>—唯一,即不能重复</p>
+<p>—被引用 </p>
+<p>create table [if not exists] 表名(</p>
+<p>列名 列类型 primary key</p>
+<p>);</p>
+<p>或者</p>
+<p>create table [if not exists] 表名(</p>
+<p>列名 列类型,</p>
+<p>primary key(列名)</p>
+<p>);</p>
+<p>alter table tablename add primary key(列名)</p>
+<p>alter table tablename drop primary key</p>
+<p>auto_increment 自增长</p>
+<p>not null 非空约束</p>
+<p>unique  唯一约束</p>
+<p>外键约束</p>
+<p>外键必须是另一个表的主键</p>
+<p>可以有多个外键</p>
+<p>foreign key(class)　references my_tab2(主键字段名);</p>
+<p>alter table my_tab1 add [constraint 外键名] foreign key(外键字段名) references mytab2(主键字段名);</p>
+<p>alter table my_tab drop foreign key 外键名字;</p>
+<p>多对一(简单 不说明)</p>
+<p>一对一</p>
+<p>从表的主键当外键</p>
+<p>多对多</p>
+<p>建一个中间表</p>
+<p>两个外键</p>
+<h2 id="面向接口编程"><a href="#面向接口编程" class="headerlink" title="面向接口编程"></a>面向接口编程</h2><p>1.创建一个UserDao接口,建立一个实现类UserDaoImpl</p>
+<p>2.建立一个包装类,返回实现类</p>
+<p>3.建立一个配置文件,以键值对方式存储实现类的类名</p>
+<p>4.包装类加载配置文件通过键得到值 即得到实现类的类名</p>
+<p>然后通过反射创建实现类对象</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">InputStream in &#x3D; 包装类.class.getClassLoader()</span><br><span class="line">.getResourceAsStream(&quot;配置文件名&quot;);</span><br><span class="line">Properties props &#x3D; new Properties();</span><br><span class="line">props.load(in);</span><br><span class="line">String classname &#x3D; props.getProperty(&quot;键名&quot;);</span><br><span class="line">Class clazz &#x3D; Class.forName(classname);</span><br><span class="line">return (UserDao)clazz.newInstance();</span><br></pre></td></tr></table></figure>
+
+<h2 id="批处理"><a href="#批处理" class="headerlink" title="批处理"></a>批处理</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">String sql &#x3D; &quot;insert into tablename values(?,?,?,?)&quot;;</span><br><span class="line">PrepareStatement &#x3D; pstmt &#x3D; con.PrepareStatement(sql);</span><br><span class="line">&#x2F;&#x2F; 循环添加参数</span><br><span class="line">for(int i &#x3D; 0;i&lt;1000;i++)</span><br><span class="line">&#123;</span><br><span class="line">    pstmt.setInt(1,i+1);</span><br><span class="line">    pstmt.setString(2,&quot;name_&quot;+i);</span><br><span class="line">    pstmt.setInt(3,i);</span><br><span class="line">    pstmt.setInt(4,i%2&#x3D;&#x3D;0?&quot;男&quot;:&quot;女&quot;);</span><br><span class="line">    </span><br><span class="line">    pstmt.adddBatch();&#x2F;&#x2F;添加批!这一组参数就保存到这个对象内置的集合里面了</span><br><span class="line">&#125;</span><br><span class="line">pstmt.excuteBatch();&#x2F;&#x2F;执行批</span><br></pre></td></tr></table></figure>
+
+<h2 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h2><p>四个特性:</p>
+<p>原子性</p>
+<p>​    –事务中所有操作是不可再分割的原子单位</p>
+<p>一致性</p>
+<p>​    –事务执行后,数据库状态与其他业务规则保持一致</p>
+<p>如转账业务,无论事务执行成功与否,参与转账的两个账户余额之和应该是不变的</p>
+<p>隔离性</p>
+<p>​    –在并发操作中,不同事务之间应该隔离开来,使每个并发中的事务不会相互干扰</p>
+<p>持久性</p>
+<p>​    –一旦事务提交成功,事务中所有的数据操作都必须被持久化到数据库中,即使提交事务后,数据库马上崩溃,在数据库重启时也必须能够保证通过某种机制恢复数据</p>
+<h3 id="mysql的事务"><a href="#mysql的事务" class="headerlink" title="mysql的事务"></a>mysql的事务</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">start transaction;&#x2F;&#x2F;开启事务</span><br><span class="line">commit;&#x2F;&#x2F;提交事务</span><br><span class="line">rollback;&#x2F;&#x2F;回滚事务</span><br></pre></td></tr></table></figure>
+
+<h3 id="JDBC使用事务"><a href="#JDBC使用事务" class="headerlink" title="JDBC使用事务"></a>JDBC使用事务</h3><p>con.setAutoCommit(boolean):设置是否为自动提交事务如果是true(默认为true)表示自动提交事务,也就是每条执行的SQL语句都是一个单独的事务,如果设置false就相当于开启事务</p>
+<h3 id="四大隔离级别"><a href="#四大隔离级别" class="headerlink" title="四大隔离级别"></a>四大隔离级别</h3><p>SERIALIZABLE(串行化)</p>
+<p>​    –不会出现任何并发问题</p>
+<p>​    –    效率最低,当然安全性是最高的</p>
+<p>REPEATABLE READ(可重复读)</p>
+<p>​    –防止脏读和不可重复读</p>
+<p>​    –    性能比串行化 好</p>
+<p>READ COMMITTED(读以提交数据)</p>
+<p>​    –    防止脏读</p>
+<p>​    – 性能比 可重复读 要高</p>
+<p>READ UNCOMMITTED(读未提交数据)</p>
+<p>​    –可能出现人很好事务并发问题</p>
+<p>​    – 性能最好</p>
+<h3 id="mysql的隔离级别"><a href="#mysql的隔离级别" class="headerlink" title="mysql的隔离级别"></a>mysql的隔离级别</h3><p>mysql默认隔离级别为 Repeatable read 可以通过下面语句查看</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select @@tx_isolation</span><br></pre></td></tr></table></figure>
+
+<p>也可以通过下面语句来设置当前连接的隔离级别</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set transaction isolationlevel [4选1]</span><br></pre></td></tr></table></figure>
+
+<p>JDBC设置隔离级别</p>
+<p>con.setTransactionIsolation(int level)</p>
+<p>参数可选如下值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Connection.TRANSATION_READ_UNCOMMITTED</span><br><span class="line">Connection.TRANSATION_READ_COMMITTED</span><br><span class="line">Connection.TRANSATION_REPEATABLE_READ</span><br><span class="line">Connection.TRANSATION_SERIALIZABLE</span><br></pre></td></tr></table></figure>
+
+
+
+<p>###同一事物的所有操作必须使用同一个Connection对象</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">    con.setAutoCommit(<span class="keyword">false</span>);<span class="comment">//开启事务</span></span><br><span class="line">    ...</span><br><span class="line">    ...</span><br><span class="line">    con.commit();<span class="comment">//提交事务</span></span><br><span class="line">&#125;<span class="keyword">catch</span>()</span><br><span class="line">&#123;</span><br><span class="line">    con.rollback();<span class="comment">//回滚事务</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="数据库连接池"><a href="#数据库连接池" class="headerlink" title="数据库连接池"></a>数据库连接池</h3><p>概念:用来管理Connection(连接的)进行重用,避免频繁的创建和销毁</p>
+<p>几个基本参数</p>
+<p>–初始大小(10)</p>
+<p>指定初始有多少个Connection</p>
+<p>–最大空闲连接数(12)</p>
+<p>指定达到多少个空闲连接后开始销毁Connection</p>
+<p>–最小空闲连接数(3)</p>
+<p>指定达到多少个空闲连接后开始创建Connection</p>
+<p>–增量(5)</p>
+<p>每次创建最小单位</p>
+<p>其他参数</p>
+<p>–最大连接数(20)</p>
+<p>–最大等待时间(1000)</p>
+<h4 id="DBCP连接池"><a href="#DBCP连接池" class="headerlink" title="DBCP连接池"></a>DBCP连接池</h4><p>使用装饰模式</p>
+<p>使用:</p>
+<p>导入commons下dbcp和pool包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">BasicDataSource dataSource &#x3D; new BasicDataSource();</span><br><span class="line">dataSource.set...</span><br><span class="line">dataSource.set...</span><br><span class="line">dataSource.set...</span><br><span class="line">dataSource.set...</span><br><span class="line">Connection con &#x3D; dataSource.getonnection();</span><br></pre></td></tr></table></figure>
+
+<h4 id="C3P0连接池"><a href="#C3P0连接池" class="headerlink" title="C3P0连接池"></a>C3P0连接池</h4><p>使用动态代理</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CombopooledDateSource ds = <span class="keyword">new</span> CombopooledDateSource();<span class="comment">//默认加载指定路径的文件</span></span><br><span class="line"><span class="comment">//也可以加载指定路径的文件</span></span><br><span class="line">ds.set...</span><br><span class="line">ds.set...</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>配置文件要求:</p>
+<p>–文件名称:必须交c3p0-config.xml</p>
+<p>–文件位置:必须在src下面</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;c3p0-config&gt;</span><br><span class="line">	&lt;default-config&gt;</span><br><span class="line">		&lt;property name&#x3D;&quot;jdbcUrl&quot;&gt;</span><br><span class="line">		jdbc:mysql:&#x2F;&#x2F;localhost:3306&#x2F;mydb1&lt;&#x2F;property&gt;</span><br><span class="line">		&lt;property name&#x3D;&quot;dricverClass&quot;&gt;</span><br><span class="line">		com.mysql.jdbc.Driver&lt;\property&gt;</span><br><span class="line">		&lt;property name&#x3D;&quot;user&quot;&gt;root&lt;property&gt;</span><br><span class="line">		&lt;property name&#x3D;&quot;password&quot;&gt;</span><br><span class="line">		123456&lt;\property&gt;</span><br><span class="line">		&lt;property name&#x3D;&quot;acquireIncrement&quot;&gt;</span><br><span class="line">		3&lt;\property&gt;</span><br><span class="line">       &lt;\default-config&gt;</span><br><span class="line">  &lt;\c3p0-config&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="tomcat配置连接池"><a href="#tomcat配置连接池" class="headerlink" title="tomcat配置连接池"></a>tomcat配置连接池</h2><p>配置<Context>元素中配置<Resource>子元素</p>
+<p>\tomcat\conf\</p>
+<p>context.xml</p>
+<p>配置所有主机所有项目</p>
+<p>server.xml</p>
+<p><Host>元素下</p>
+<p>配置这个主机所有项目</p>
+<p>\Catalina\localhost</p>
+<p>新建一个xml配置文件</p>
+<p>命名 项目名.xml</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;Context ...&gt;</span><br><span class="line">...</span><br><span class="line">&lt;Resource name&#x3D;&quot;自定义名称&quot;</span><br><span class="line">		 type&#x3D;&quot;type(自己需要的类型:例如 CombopooledDateSource)&quot;		 factory&#x3D;&quot;org.apache.naming.factory.BeanFactory&quot;</span><br><span class="line">&#x2F;&gt;</span><br><span class="line">&lt;&#x2F;Context&gt;</span><br></pre></td></tr></table></figure>
+
+<p>–name: 指定资源的名称,这个名称可以随便给,在获取资源时需要用到</p>
+<p>–factory:用来创建资源的工厂,这个值基本上是固定的,不用修改</p>
+<p>–type:资源的类型,我们要给出的类型当然是我们连接池的类型了</p>
+<p>–bar:表示资源的属性,如果存在名为bar的属性,name就配置bar的值,对于连接池而言,就是配置 url,username等属性</p>
+<h3 id="获取资源"><a href="#获取资源" class="headerlink" title="获取资源"></a>获取资源</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Context initCtx = <span class="keyword">new</span> initialContext();</span><br><span class="line">Context envCtx = (Context)initCtx.lookup(<span class="string">"java:comp/env"</span>);</span><br><span class="line">type bean = (type)envCtx.lookup(<span class="string">"bean/MyBeanFactory"</span>);</span><br><span class="line">writer.println(<span class="string">"foo="</span>+bean.getFoo+<span class="string">",bar = "</span>+bean.getBar());</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="dbUtils"><a href="#dbUtils" class="headerlink" title="dbUtils"></a>dbUtils</h2><p>QueryRunner</p>
+<p>updte方法</p>
+<p>–int update (String sql ,Object … pramas)–&gt;可执行增,删,改,查</p>
+<p>–T query(String sql,ResultSetHandler rsh,Object…pramas)—&gt;可执行查询</p>
+<p>它会先得到ResultSet ,然后调用rsh的handle()把rs转换成需要的类型;</p>
+<p>ResultSetHandler接口:</p>
+<p>BeanHandler(单行)–&gt;构造器需要一个Class类型的参数,用来把一行结果集转换成指定类型的javaBean类型</p>
+<p>BeanListHandler(多行)–&gt;构造器也是需要一个Class类型的参数,用来把一行结果集转换成指定类型</p>
+<p>一行转换成javaBean多行则转换成List</p>
+<p>MapHandler(单行)–&gt; 把一行结果集转换成Map对象</p>
+<p>MapListHandler(多行)–&gt;把一行记录转换成一个Map,多行就是对个Map 即List<Map></p>
+<p>ScalarHandler(单行单列)–&gt; 通常与select count(*) from …</p>
+<p>结果集单行单列,返回值是一个Object</p>
+<h3 id="util下的d时间和sql下的时间类型转换"><a href="#util下的d时间和sql下的时间类型转换" class="headerlink" title="util下的d时间和sql下的时间类型转换"></a>util下的d时间和sql下的时间类型转换</h3><p>sql的时间类型是util时间类型的子类  可直接赋值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.util.Date date &#x3D; new java.sql.Date()</span><br></pre></td></tr></table></figure>
+
+<p>util的Date类型通过 getTime方法返回一个毫秒值然后传给sql下时间的类型的构造方法完成转换</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">java.util.Date date &#x3D; new java.util.Date();</span><br><span class="line">long l &#x3D; date.getTime();</span><br><span class="line">java.sql.Date sqldate &#x3D; new java.sql.Date(l);</span><br></pre></td></tr></table></figure>
+
+<p>net start mysql</p>
+<p>net stop mysql</p>
+<p>登陆</p>
+<p>mysql -uroot -p</p>
+<p>​    -u:后面跟用户名</p>
+<p>​    -p:后面跟密码</p>
+<p>​    -h:后面跟ip</p>
+<p>退出</p>
+<p>exit或quit</p>
+<p>WEB-INF里面不允许浏览器访问</p>
+<h2 id="配置外部应用"><a href="#配置外部应用" class="headerlink" title="配置外部应用"></a>配置外部应用</h2><p> 意思就是不放在webapps下面</p>
+<p>​    两种方式:</p>
+<h2 id="配置虚拟主机"><a href="#配置虚拟主机" class="headerlink" title="配置虚拟主机"></a>配置虚拟主机</h2><p>​    在server.xml中增加一个 &lt;Host&gt;标签</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Mysql/" rel="tag"># Mysql</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/06/22/linux_base/" rel="prev" title="Base of Linux">
+      <i class="fa fa-chevron-left"></i> Base of Linux
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/02/23/type_IO/" rel="next" title="学习NIO BIO AIO">
+      学习NIO BIO AIO <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#mysql"><span class="nav-number">1.</span> <span class="nav-text">mysql</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本信息"><span class="nav-number">1.1.</span> <span class="nav-text">基本信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据类型"><span class="nav-number">1.2.</span> <span class="nav-text">数据类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DDL-操作数据库"><span class="nav-number">1.3.</span> <span class="nav-text">DDL(操作数据库)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DDL-操作表"><span class="nav-number">1.4.</span> <span class="nav-text">DDL(操作表)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DML-修改记录"><span class="nav-number">1.5.</span> <span class="nav-text">DML(修改记录)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DCL-用户和权限"><span class="nav-number">1.6.</span> <span class="nav-text">DCL(用户和权限)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DQL-查询"><span class="nav-number">1.7.</span> <span class="nav-text">DQL(查询)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#模糊查询"><span class="nav-number">1.7.0.1.</span> <span class="nav-text">模糊查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#聚合函数"><span class="nav-number">1.7.0.2.</span> <span class="nav-text">聚合函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分组查询"><span class="nav-number">1.7.0.3.</span> <span class="nav-text">分组查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多表查询"><span class="nav-number">1.7.0.4.</span> <span class="nav-text">多表查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#子查询"><span class="nav-number">1.7.0.5.</span> <span class="nav-text">子查询</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编码问题"><span class="nav-number">1.8.</span> <span class="nav-text">编码问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#备份与恢复"><span class="nav-number">1.9.</span> <span class="nav-text">备份与恢复</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#约束"><span class="nav-number">1.10.</span> <span class="nav-text">约束</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#面向接口编程"><span class="nav-number">1.11.</span> <span class="nav-text">面向接口编程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#批处理"><span class="nav-number">1.12.</span> <span class="nav-text">批处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事务"><span class="nav-number">1.13.</span> <span class="nav-text">事务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#mysql的事务"><span class="nav-number">1.13.1.</span> <span class="nav-text">mysql的事务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JDBC使用事务"><span class="nav-number">1.13.2.</span> <span class="nav-text">JDBC使用事务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四大隔离级别"><span class="nav-number">1.13.3.</span> <span class="nav-text">四大隔离级别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mysql的隔离级别"><span class="nav-number">1.13.4.</span> <span class="nav-text">mysql的隔离级别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库连接池"><span class="nav-number">1.13.5.</span> <span class="nav-text">数据库连接池</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#DBCP连接池"><span class="nav-number">1.13.5.1.</span> <span class="nav-text">DBCP连接池</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#C3P0连接池"><span class="nav-number">1.13.5.2.</span> <span class="nav-text">C3P0连接池</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tomcat配置连接池"><span class="nav-number">1.14.</span> <span class="nav-text">tomcat配置连接池</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取资源"><span class="nav-number">1.14.1.</span> <span class="nav-text">获取资源</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dbUtils"><span class="nav-number">1.15.</span> <span class="nav-text">dbUtils</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#util下的d时间和sql下的时间类型转换"><span class="nav-number">1.15.1.</span> <span class="nav-text">util下的d时间和sql下的时间类型转换</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置外部应用"><span class="nav-number">1.16.</span> <span class="nav-text">配置外部应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置虚拟主机"><span class="nav-number">1.17.</span> <span class="nav-text">配置虚拟主机</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">djf</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">djf</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

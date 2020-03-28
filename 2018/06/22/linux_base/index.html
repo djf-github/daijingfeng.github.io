@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="linux基础常见命令cd      任何目录下回到用户目录 cd空格..     回到上级目录 cp      复制 mv      移动 history     查看历史命令 Ctrl+R     查找历史命令 tab     补全命令或者文件名 clear     清屏 mkdir     创建文件夹 touch     创建新文件或者更新已有文件时间 rm     删除 编辑器内撤销操作:">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Base of Linux">
+<meta property="og:url" content="http://yoursite.com/2018/06/22/linux_base/index.html">
+<meta property="og:site_name" content="我要养只大熊猫">
+<meta property="og:description" content="linux基础常见命令cd      任何目录下回到用户目录 cd空格..     回到上级目录 cp      复制 mv      移动 history     查看历史命令 Ctrl+R     查找历史命令 tab     补全命令或者文件名 clear     清屏 mkdir     创建文件夹 touch     创建新文件或者更新已有文件时间 rm     删除 编辑器内撤销操作:">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-06-21T16:09:39.000Z">
+<meta property="article:modified_time" content="2020-03-08T18:23:11.927Z">
+<meta property="article:author" content="djf">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2018/06/22/linux_base/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>Base of Linux | 我要养只大熊猫</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">我要养只大熊猫</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/22/linux_base/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="djf">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我要养只大熊猫">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Base of Linux
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-06-22 00:09:39" itemprop="dateCreated datePublished" datetime="2018-06-22T00:09:39+08:00">2018-06-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-09 02:23:11" itemprop="dateModified" datetime="2020-03-09T02:23:11+08:00">2020-03-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="linux基础"><a href="#linux基础" class="headerlink" title="linux基础"></a>linux基础</h1><h2 id="常见命令"><a href="#常见命令" class="headerlink" title="常见命令"></a>常见命令</h2><p>cd      任何目录下回到用户目录</p>
+<p>cd空格..     回到上级目录</p>
+<p>cp      复制</p>
+<p>mv      移动</p>
+<p>history     查看历史命令</p>
+<p>Ctrl+R     查找历史命令</p>
+<p>tab     补全命令或者文件名</p>
+<p>clear     清屏</p>
+<p>mkdir     创建文件夹</p>
+<p>touch     创建新文件或者更新已有文件时间</p>
+<p>rm     删除</p>
+<p>编辑器内撤销操作:按下esc退出插入模式按u撤销</p>
+<h3 id="与时间相关"><a href="#与时间相关" class="headerlink" title="与时间相关"></a>与时间相关</h3><p>date </p>
+<p>​    查看当前时间(默认中国时间)</p>
+<p>​    -u</p>
+<p>​    显示标准时间</p>
+<p>​    -s</p>
+<p>​    设置当前时间</p>
+<p>​    +%Y–%m–%d</p>
+<p>​    格式化显示时间</p>
+<p>htwclock(clock)</p>
+<p>​    显示硬件时钟时间</p>
+<p>cal</p>
+<p>​    查看日历</p>
+<p>uptime</p>
+<p>​    查看系统运行时间</p>
+<h3 id="输出-查看命令"><a href="#输出-查看命令" class="headerlink" title="输出,查看命令"></a>输出,查看命令</h3><p>echo </p>
+<p>​    输出</p>
+<p>cat</p>
+<p>​    查看文件</p>
+<p>more</p>
+<p>​    翻页显示内容,只能向后翻页,按空格翻页</p>
+<p>less</p>
+<p>翻页显示内容,可以上下翻页</p>
+<p>head</p>
+<p>​    显示文件的头几行(默认10行)</p>
+<p>​    -n :指定显示行数</p>
+<p>tail</p>
+<p>​    显示文件末尾几行(默认十行 )</p>
+<p>​    -n :指定显示行数</p>
+<p>​    -f :追踪显示文件更新</p>
+<p>​    (一般用于查看日志,命令不会退出,而是持续显示新加入的内容 ) </p>
+<h3 id="查看硬件信息"><a href="#查看硬件信息" class="headerlink" title="查看硬件信息"></a>查看硬件信息</h3><p>lspci</p>
+<p>​    查看PCI设备</p>
+<p>​    -v :查看详细信息</p>
+<p>lsusb</p>
+<p>​    查看USB设备</p>
+<p>​    -v :查看详细信息</p>
+<p>lsmod</p>
+<p>​    查看加载的模块(驱动)</p>
+<h3 id="关机-重启"><a href="#关机-重启" class="headerlink" title="关机,重启"></a>关机,重启</h3><p>shutdown</p>
+<p>​    shutdown[关机,重启] 时间</p>
+<p>​    关闭或重启计算机</p>
+<p>​    -h :关闭计算机</p>
+<p>​    -r :重新启动</p>
+<p>例如:</p>
+<p>​    立即关机        shutdown -h now</p>
+<p>​    十分钟后关机        shutdown -h +10</p>
+<p>​    23:30分后关机     shutdown -h 23:30</p>
+<p>​    立即重启            shutdown -r now</p>
+<p>poweroff</p>
+<p>​    立即关闭计算机</p>
+<p>reboot</p>
+<p>​    立即重启计算机</p>
+<h3 id="归档-压缩"><a href="#归档-压缩" class="headerlink" title="归档,压缩"></a>归档,压缩</h3><p>  zip</p>
+<p>​    压缩文件</p>
+<p>​    zip  [压缩后文件名.zip][要压缩的文件]</p>
+<p>unzip</p>
+<p>​    解压缩zip文件</p>
+<p>​    unzip [要解压缩的文件.zip]</p>
+<p>gzip</p>
+<p>​    压缩文件</p>
+<p>​    </p>
+<p>tar</p>
+<p>​    用以归档文件</p>
+<p>​    tar -cvf  [归档后文件名.tar]  [要归档的文件夹]</p>
+<p>​    tar  -xvf [要解开的归档的文件名.tar]</p>
+<p>​    tar -cvzf :加入-z后表示对归档后的文件执行gzip压缩操作</p>
+<p>​    操作后的文件名后缀位  .tar.gz</p>
+<p>​    tar -xzvf 解压缩 tar.gz文件</p>
+<p>-c :建立压缩档案</p>
+<p>-x :解压</p>
+<p>-t :查看内容</p>
+<p>-r :向压缩归档文件末尾追加文件</p>
+<p>-u :更新原压缩包中的文件</p>
+<p>下面是五个独立命令,压缩解压都要用到其中一个，可以和别的命令连用但只能用其中一个。下面的参数是根据需要在压缩或解压档案时可选的。</p>
+<p>-z :有gzip属性的</p>
+<p>-j :有bz2属性的</p>
+<p>-Z :有compress属性的</p>
+<p>-v :显示所有过程</p>
+<p>-O :将文件解开到标准输出</p>
+<p>下面的参数-f是必须的</p>
+<p>-f : 使用档案名字,切记,这个参数是最后一个参数,后面只能接档案名</p>
+<h3 id="查找"><a href="#查找" class="headerlink" title="查找"></a>查找</h3><p>locat</p>
+<p>快速查找文件或文件夹</p>
+<p>locate [关键字]</p>
+<p>注意:此命令是查找数据库,数据库默认每天更新一次</p>
+<p>新加入的文件查会找不到</p>
+<p>可用update命令手动更新数据库</p>
+<p>find</p>
+<p>​    高级查找文件,文件夹</p>
+<p>​    fing [查找位置][查找参数]</p>
+<p> -name :关键字查找</p>
+<p>​    例如:</p>
+<p>find [查找位置] *keyword* 所有包含keyword的文件或文件夹</p>
+<p>find [查找位置] *.keyword  所有keyword后缀名的文件</p>
+<p>  -perm :权限查找</p>
+<p>  -type :类型查找</p>
+<p>  -user :基于某个用户的查找</p>
+<p>  -group:基于某个用户组查找</p>
+<p>  -citme:基于更新时间查找</p>
+<p>  -size:基于文件大小查找</p>
+<p>find最重要的是可以连接其他命令对查找出来的结果执行其他操作</p>
+<p>fing [查找位置][查找参数] -exec  命令 -参数 {} ;</p>
+<h3 id="vi-vim文本编辑器"><a href="#vi-vim文本编辑器" class="headerlink" title="vi vim文本编辑器"></a>vi vim文本编辑器</h3><p>vim是vi的增强版本</p>
+<p>vim已经不仅仅是最为普通意义上的文本编辑器(如记事本)</p>
+<p>而是被广泛的作为在文本编辑,文本处理,代码开发等等 用途</p>
+<p>linux中知名的文本编辑器还有emacs,他的功能比VIM还要强大</p>
+<p>一般通过vim+目标文件路径形式使用</p>
+<p>如果目标文件存在,则打开该文件</p>
+<p>如果目标文件不存在,则新建该文件</p>
+<p>vim有三种模式</p>
+<p>​    -命令模式(常规模式)</p>
+<p>​    任何模式下可以通过esc进入命令模式</p>
+<p>​    命令模式可以键入不同的命令来完成选择,复制,粘贴,撤销等操作</p>
+<p>命令模式常用命令</p>
+<p> i    在光标前插入文本</p>
+<p> o    在当前行的下面插入新行</p>
+<p> dd           删除整行</p>
+<p> yy        将当前行的内容放入缓冲区</p>
+<p> n+yy    将接下来n行的内容放入缓存区(复制n行)</p>
+<p> p        将缓冲区的文本放入光标后()粘贴</p>
+<p> u         撤销上一个操作</p>
+<p> r        替换当前字符</p>
+<p> /        查找关键字</p>
+<p>​    -插入模式</p>
+<p>在命令模式中按  “I”  键即可进入插入模式,</p>
+<p>在插入模式中可以输入编辑文本内容</p>
+<p>​    ex模式</p>
+<p>在命令模式中按  “:”可以进入ex模式,光标会移动到底部,</p>
+<p>在这里可以保持修改或退出vim.</p>
+<p>w    保存当前修改</p>
+<p>q    退出(不保存)</p>
+<p>q!    强制退出</p>
+<p>x    保持并退出,相当于wq</p>
+<p>set number    显示行号</p>
+<p>!    系统命令        执行一个系统命令并显示结果</p>
+<p>sh    切换到命令行,使用ctrl+d切换回vim</p>
+<h2 id="磁盘和文件系统管理"><a href="#磁盘和文件系统管理" class="headerlink" title="磁盘和文件系统管理"></a>磁盘和文件系统管理</h2><h3 id="磁盘结构"><a href="#磁盘结构" class="headerlink" title="磁盘结构"></a>磁盘结构</h3><p>(老版本磁盘,目前市场大部分电脑使用的)</p>
+<p>柱面(cylinder),</p>
+<p>扇区(sector),</p>
+<p>磁头(head),</p>
+<p>磁盘设备在dev目录下的文件名称</p>
+<p>一般为hd[a-z],或 sd[a-z]</p>
+<p>IDE设备的名称为hd,(老版本的硬件,)</p>
+<p>SATA,SCSI,SAS,USB等设备的名称为sd</p>
+<h3 id="分区概念"><a href="#分区概念" class="headerlink" title="分区概念"></a>分区概念</h3><h4 id="分区机制"><a href="#分区机制" class="headerlink" title="分区机制"></a>分区机制</h4><p>MBR</p>
+<p>(目前还在使用,但逐渐被GPT取代)</p>
+<p>传统分区机制,应用于绝大部分使用BIOS的PC设备</p>
+<p>支持32位和64位系统</p>
+<p>支持分区数量有限</p>
+<p>不支持超过2T的硬盘(有第三方解决方案)</p>
+<p>分区</p>
+<p>最多只能创建4个主分区</p>
+<p>如需要更多的分区需要创建拓展分区</p>
+<p>一个拓展分区会占用一个主分区的位置</p>
+<p>拓展分区不能使用,需要在里面创建逻辑分区</p>
+<p>最多支持65个IDE分区和15个SCSI分区</p>
+<p>GPT</p>
+<p>较新的分区机制,解决了MBR很多缺点</p>
+<p>支持超过2T的硬盘(MBR采用32机制,GPT使用64机制)</p>
+<p>向后兼容MBR</p>
+<p>必须在支持UEFI的硬件上使用(新的性能较好的电脑一般都可以两种互换)</p>
+<p>必须使用64系统</p>
+<p>Mac,linux系统都能支持GPT分区格式</p>
+<h3 id="fdisk进行磁盘管理"><a href="#fdisk进行磁盘管理" class="headerlink" title="fdisk进行磁盘管理"></a>fdisk进行磁盘管理</h3><p>fdisk是老牌的分区工具支持绝大多数操作系统,几乎所有的linux发型版本都装有fdisk</p>
+<p>包括linux在rescue模式下依然能够使用</p>
+<p>fdisk是基于MBR的分区工具</p>
+<p>需要超级用户权限才能使用</p>
+<p>fdisk +需要分区的磁盘</p>
+<p>然后会进入fdisk的命令行交互,按提示即可完成分区</p>
+<p>cat /proc/partitions 查看分区信息  (proc目录下保存的都是系统实时信息)</p>
+<h3 id="linux文件系统"><a href="#linux文件系统" class="headerlink" title="linux文件系统"></a>linux文件系统</h3><p>创建文件系统的过程称之为格式化</p>
+<p>没有文件系统的设备称之为裸设备</p>
+<p>使用MKE2FS来创建文件系统</p>
+<p>linux主流文件系统为ext4</p>
+<p>例如 MKE2FS -t ext4 /dev/sda</p>
+<p>常用参数</p>
+<p>–b blocksize   指定文件系统快大小</p>
+<p>–c            建立文件系统时检查坏损快</p>
+<p>–L  Lable    指定卷标</p>
+<p>–j            建立文件系统日志</p>
+<p>MKFS也可以创建文件系统,但支持参数较少,不能进行精细化控制</p>
+<p>例如     mkfs.ext4  /dev/sdb</p>
+<p>DUMPE2FS用于查看文件系统信息</p>
+<p>例如  dumpe2fs /edv/sda</p>
+<p>E2LABLE也可以用来为文件系统添加标签</p>
+<p>– e2lable /dev/sda 显示标签</p>
+<p>–e2lable /dev/sda  标签名  设置标签</p>
+<p>FSCK用来检查并修复损坏的文件系统</p>
+<p>fsck /dev/sda </p>
+<p>–使用-y参数不提示,直接进行修复</p>
+<p>–默认fsck会自动判断文件系统类型,如果损坏较为严重,需要用</p>
+<p>​    -t参数来指定文件系统类型</p>
+<p>–对于识别问文件的损坏数据(文件系统无记录),fsck会将该文件放入lost+fount目录</p>
+<p>–系统启动时会对磁盘进行fsck操作</p>
+<p>挂载,使用文件系统</p>
+<p>挂载</p>
+<p>创建好文件系统后需要挂载到一个目录才能使用</p>
+<p>windows和mac系统会进行自动挂载</p>
+<p>linux需要需要手工进行挂载操作或配置系统进行自动挂载</p>
+<p>使用mount命令挂载目录</p>
+<p>mount dev/sda  /mnt/</p>
+<p>常用参数</p>
+<p>不带参数显示所有已挂载的文件系统</p>
+<p>–t    指定文件系统类型</p>
+<p>–o   指定挂载选项</p>
+<p>​    ro ,rw,    以只读或读写形式挂载,默认是rw</p>
+<p>​    sync    代表不使用缓存,而是对所有操作直接写入磁盘</p>
+<p>​    async    代表使用缓存,默认是async</p>
+<p>​    noatime    代表每次访问文件时不更新文件访问时间</p>
+<p>​    atime    代表每次访问文件时更新访问时间</p>
+<p>​    remount    重新挂载文件系统</p>
+<p>umount dev/sda 等于umount  /mnt/</p>
+<p>写在文件系统,相当于windows里面的弹出</p>
+<p>如果出现device is busy  表示文件系统正在被使用</p>
+<p>fuser -u /mnt  查看使用文件系统的进程</p>
+<p>lsof /mnt  查看正在被使用的文件</p>
+<p>自动挂载</p>
+<p>配置/etc/fstab</p>
+<p>每一行代表一个挂载设置,格式如下</p>
+<p>/dev/sda             /mnt    ext4        defaults        0 0</p>
+<p>需要挂载的设备    挂载点    文件系统        挂载选项        dump,fsck相关选项</p>
+<p>需要挂载的设备也可以使用LABLE识别,使用lable=linuxcast取代/dev/sda</p>
+<p>也可以使用mount -a 命令 挂载所有在配置文件中配置的磁盘或分区</p>
+<h2 id="获取帮助"><a href="#获取帮助" class="headerlink" title="获取帮助"></a>获取帮助</h2><p>linux提供了极为详细的的帮助工具及文档,一定要养成查帮助文档</p>
+<p>的习惯,可以大大减少需要记忆的东西并提高效率</p>
+<p>几乎所有命令都可以使用-h 或者–help参数获取使用方法,参数信息等</p>
+<h3 id="man"><a href="#man" class="headerlink" title="man"></a>man</h3><p>man命令是linux中最为常用的帮助命令,将要获取参数的命令作为参数</p>
+<p>运行man命令就可以获取相应的帮助文档</p>
+<p>man文档分为很多类型</p>
+<p>man -k 关键字  查找包含该关键字的文档</p>
+<h3 id="INfo"><a href="#INfo" class="headerlink" title="INfo"></a>INfo</h3><p>info与man类似,但是提供的信息更为详细深入,以类似网页的形式显示</p>
+<p>info也可以使用关键字进行模糊查找</p>
+<h3 id="DOC"><a href="#DOC" class="headerlink" title="DOC"></a>DOC</h3><p>统一保存在/usr/share/doc目录中</p>
+<h2 id="用户及权限基础"><a href="#用户及权限基础" class="headerlink" title="用户及权限基础"></a>用户及权限基础</h2><h3 id="用户-组"><a href="#用户-组" class="headerlink" title="用户,组"></a>用户,组</h3><p>每个用户拥有一个UserID操作系统实际使用的是ID不是用户名</p>
+<p>每个用户属于一个主组,属于一个或多个附属组</p>
+<p>每个组拥有一个GroupID</p>
+<p>每个进程以一个用户身份运行,并受该用户可访问资源限制</p>
+<p>每个可登陆用户拥有一个指定的shell</p>
+<h4 id="用户"><a href="#用户" class="headerlink" title="用户"></a>用户</h4><p>用户ID为32位,从0开始,但是为了和老式系统兼容(16位),用户ID限制在60000以下</p>
+<p>用户分为三种</p>
+<p>​    –root用户(id为0的用户为root用户)</p>
+<p>​    –系统用户(1~499)(专为进程使用而创建的用户)</p>
+<p>​    –普通用户(500y以上)</p>
+<p>系统中的文件都有一个所属用户和所属组</p>
+<p>使用id命令可以显示当前用户的信息</p>
+<p>passwd可以修改当前用户密码</p>
+<p>相关文件</p>
+<p>/etc/passwd        –保存用户信息</p>
+<p>/etc/shadow        –保存用户密码(加密的)</p>
+<p>/etc/group        –保存组信息</p>
+<p>查看当前登录用户</p>
+<p>whoami        显示当前用户</p>
+<p>who        显示有哪些用户已经登录系统</p>
+<p>w            显示有哪些用户已经登录并且在干什么</p>
+<p>创建一个用户</p>
+<p>useradd aaa</p>
+<p>这个命令执行的操作</p>
+<p>1.在etc/passwd中添加用户信息</p>
+<p>2.如果使用passwd命令创建密码,则将密码保存在etc/shadow中</p>
+<p>3.为用户建立一个新的家目录 /home/aaa</p>
+<p>4.将 /etc/skel中的文件复制到用户的家目录中</p>
+<p>5.建立一个与用户名相同的组,新建用户默认属于这个同名组</p>
+<p>常用参数</p>
+<p> -d         家目录</p>
+<p>-s        登录shell</p>
+<p>-u        userid</p>
+<p>-g         主组</p>
+<p>-G        附属组(最多31个,用逗号分隔)</p>
+<p>也可以通过直接修改/etc/passwd文件来实现,但是不建议</p>
+<p>修改用户信息</p>
+<p>usermod  参数   用户名</p>
+<p>参数</p>
+<p>-l        新用户名</p>
+<p>-u        新userid</p>
+<p>-d        用户家目录位置</p>
+<p>-g        用户所属组</p>
+<p>-G        用户所属附属组</p>
+<p>-L        锁定用户使其不能登录</p>
+<p>-U        解除锁定</p>
+<p>删除用户</p>
+<p>userdel         (保留用户家目录)</p>
+<p>userdel -r    (同时删除用户的家目录)</p>
+<h4 id="组"><a href="#组" class="headerlink" title="组"></a>组</h4><p>每个组有一个组ID</p>
+<p>组信息保存在/etc/group中</p>
+<p>每个用户拥有一个主组,同时还可以拥有最对31个附属组</p>
+<p>命令groupadd用以创建组:</p>
+<p>​    groupadd  linuxcast(组名)</p>
+<p>命令groupmod用以修改组信息</p>
+<p>​    groupmod    -n    newname oldname    修改组名</p>
+<p>​    groupmod    -g    newGid    oldGid        修改组ID</p>
+<p>命令groupdel用以删除组</p>
+<p>​    groupdel    linuxcast</p>
+<h3 id="权限"><a href="#权限" class="headerlink" title="权限"></a>权限</h3><p>文件权限</p>
+<p>linux中每个文件拥有三种权限</p>
+<p>r(读取)</p>
+<p>w(写入)</p>
+<p>x(执行)</p>
+<p>目录必须拥有X权限否则无法查看其内容</p>
+<h4 id="UGO"><a href="#UGO" class="headerlink" title="UGO"></a>UGO</h4><p>linux权限是基于UGO模型进行控制的</p>
+<p>U代表User    G代表Group    O代表Other</p>
+<p>每一个文件的权限基于UGO进行设置</p>
+<p>权限三个一组(rwx),对应UGO分别设置</p>
+<p>每个文件拥有一个所属用户和一个所属组,对应UG,不属于该文件所属用户或所属组的使用O权限</p>
+<p>命令ls -l 可以查看当前目录下的文件详细信息</p>
+<h4 id="修改文件所属用户-组"><a href="#修改文件所属用户-组" class="headerlink" title="修改文件所属用户,组"></a>修改文件所属用户,组</h4><p>命令chown用以改变文件的所属用户</p>
+<p>​    chown    用户名    文件名</p>
+<p>​    -R参数递归的修改目录下的所有文件的所属用户</p>
+<p>命令chgrp用以修改文件的所属组</p>
+<p>​    chgrp    组名    文件名</p>
+<p>-R参数递归的修改目录下的所有文件的所属组</p>
+<h4 id="修改权限"><a href="#修改权限" class="headerlink" title="修改权限"></a>修改权限</h4><p>命令chmod用以修改文件的权限</p>
+<p>​    chmod    模式    文件</p>
+<p>模式为如下格式</p>
+<p>u,    g,    o分别代表用户,组,和其他</p>
+<p>a可以代指ugo</p>
+<p>+    -    代表加入或删除对应权限</p>
+<p>r    w    x代表三种权限</p>
+<p>示例</p>
+<p>chmod u+rw    文件</p>
+<p>chmod go+rw    文件</p>
+<p>chmod    a+rw    文件</p>
+<p>命令chmod也支持以数字方式修改权限,三个权限分别有三个数字表示</p>
+<p>r = 4    (2^2)</p>
+<p>w = 2    (2^1)</p>
+<p>x = 1    (2^0)</p>
+<p>示例</p>
+<p>chmod    660            ==     rw-rw—-</p>
+<p>chmod    775            ==    rwxrwxrw-</p>
+<h4 id="默认权限"><a href="#默认权限" class="headerlink" title="默认权限"></a>默认权限</h4><p>新建文件默认权限</p>
+<p>rw-rw-r–</p>
+<p>新建文件夹默认权限</p>
+<p>rwxrwxr-x</p>
+<p>每个终端都拥有一个umask属性,来确定新建文件,新建文件夹的默认属性</p>
+<p>umask使用数字权限方式表示;    如022(其实umask值有4位第一位保存特殊权限)</p>
+<p>目录的默认权限是777-umask</p>
+<p>文件的默认权限是666-umask</p>
+<p>普通用户的默认umask为002,root用户的默认umask为022</p>
+<p>命令umask用来查看设置umask值</p>
+<p>umask    022</p>
+<h4 id="特殊权限"><a href="#特殊权限" class="headerlink" title="特殊权限"></a>特殊权限</h4><p>除普通权限外还有三个默认权限</p>
+<p>suid    以文件的所属用户身份去执行而不是执行用户</p>
+<p>文件设置了suid权限后  rwx会变为rws</p>
+<p>sgid        以文件所属组身份运行        在该目录中创建的文件继承该目录的所属组</p>
+<p>sticky                            对目录用于写权限的用户,仅可以删除其拥有的文件,无法删除其他人拥有的文件</p>
+<p>设置特殊权限</p>
+<p>设置suid</p>
+<p>chmod    u+s    文件</p>
+<p>设置sgid</p>
+<p>chmod    g+s 文件</p>
+<p>设置sticky</p>
+<p>chmod o+t    文件</p>
+<p>与普通权限一样特殊权限也可以使用数字方式表示</p>
+<p>suid = 4</p>
+<p>sgid = 2</p>
+<p>sticky = 1</p>
+<p>例如</p>
+<p>chmod    4755 文件</p>
+<h2 id="网络基本配置"><a href="#网络基本配置" class="headerlink" title="网络基本配置"></a>网络基本配置</h2><p>基本网络参数</p>
+<p>要配置一个局域网通信的主机</p>
+<p>​    –ip地址</p>
+<p>​    –子网掩码</p>
+<p>要配置一个跨网段通信的计算机</p>
+<p>​    –ip地址</p>
+<p>​    –子网掩码</p>
+<p>​    –网关</p>
+<p>要配置一个可上网的计算机</p>
+<p>​    –ip地址</p>
+<p>​    –子网掩码</p>
+<p>​    –网关</p>
+<p>​    –DNS</p>
+<h2 id="管道-重定向"><a href="#管道-重定向" class="headerlink" title="管道,重定向"></a>管道,重定向</h2><h2 id="linux系统启动详解"><a href="#linux系统启动详解" class="headerlink" title="linux系统启动详解"></a>linux系统启动详解</h2><h2 id="软件管理"><a href="#软件管理" class="headerlink" title="软件管理"></a>软件管理</h2><h2 id="linux目录架构"><a href="#linux目录架构" class="headerlink" title="linux目录架构"></a>linux目录架构</h2><p><strong>bin</strong>(binary缩写)    <strong>:</strong>    所有用户可运行的二进制的可执行文件</p>
+<p><strong>boot</strong>(启动,引导)    <strong>:</strong>    引导目录 ;启动和驱动的文件都在这里包括         </p>
+<p>​                    linux内核文件</p>
+<p><strong>dev</strong>(device缩写)         <strong>:</strong> 保存计算机上面的所有硬件设备的信息</p>
+<p><strong>etc</strong>                <strong>:</strong>    所有配置信息    </p>
+<p><strong>home</strong>            <strong>:</strong>    保存用户信息 用户私有文件</p>
+<p>root用户有个单独的root目录在根目录下</p>
+<p><strong>lib</strong>(library缩写)    <strong>:</strong>    存放库文件</p>
+<p><strong>opt</strong>                <strong>:</strong>    系统默认存放大型文件(初始为空)</p>
+<p><strong>mnt    **        **:</strong>     挂载</p>
+<p><strong>proc</strong>            <strong>:</strong>    系统实时信息(不存在于硬盘中)只存在内存     中</p>
+<p><strong>sbin</strong>            <strong>:</strong>    root用户可运行的二进制执行文件</p>
+<p>sys                     :    包含底层硬件信息</p>
+<p>tmp                :    存放临时文件(系统隔段时间会自动删除) </p>
+<p>usr                :    应用软件默认存放</p>
+<p>var              :    存放经常变动的文件(例如日志文件) </p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/06/07/SpringMVC/" rel="prev" title="SpringMvc 笔记">
+      <i class="fa fa-chevron-left"></i> SpringMvc 笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/10/11/mysql/" rel="next" title="Mysql 基本知识">
+      Mysql 基本知识 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#linux基础"><span class="nav-number">1.</span> <span class="nav-text">linux基础</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#常见命令"><span class="nav-number">1.1.</span> <span class="nav-text">常见命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#与时间相关"><span class="nav-number">1.1.1.</span> <span class="nav-text">与时间相关</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输出-查看命令"><span class="nav-number">1.1.2.</span> <span class="nav-text">输出,查看命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看硬件信息"><span class="nav-number">1.1.3.</span> <span class="nav-text">查看硬件信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关机-重启"><span class="nav-number">1.1.4.</span> <span class="nav-text">关机,重启</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#归档-压缩"><span class="nav-number">1.1.5.</span> <span class="nav-text">归档,压缩</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查找"><span class="nav-number">1.1.6.</span> <span class="nav-text">查找</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vi-vim文本编辑器"><span class="nav-number">1.1.7.</span> <span class="nav-text">vi vim文本编辑器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#磁盘和文件系统管理"><span class="nav-number">1.2.</span> <span class="nav-text">磁盘和文件系统管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#磁盘结构"><span class="nav-number">1.2.1.</span> <span class="nav-text">磁盘结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分区概念"><span class="nav-number">1.2.2.</span> <span class="nav-text">分区概念</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#分区机制"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">分区机制</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fdisk进行磁盘管理"><span class="nav-number">1.2.3.</span> <span class="nav-text">fdisk进行磁盘管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#linux文件系统"><span class="nav-number">1.2.4.</span> <span class="nav-text">linux文件系统</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取帮助"><span class="nav-number">1.3.</span> <span class="nav-text">获取帮助</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#man"><span class="nav-number">1.3.1.</span> <span class="nav-text">man</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#INfo"><span class="nav-number">1.3.2.</span> <span class="nav-text">INfo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DOC"><span class="nav-number">1.3.3.</span> <span class="nav-text">DOC</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用户及权限基础"><span class="nav-number">1.4.</span> <span class="nav-text">用户及权限基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用户-组"><span class="nav-number">1.4.1.</span> <span class="nav-text">用户,组</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#用户"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">用户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#组"><span class="nav-number">1.4.1.2.</span> <span class="nav-text">组</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#权限"><span class="nav-number">1.4.2.</span> <span class="nav-text">权限</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#UGO"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">UGO</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#修改文件所属用户-组"><span class="nav-number">1.4.2.2.</span> <span class="nav-text">修改文件所属用户,组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#修改权限"><span class="nav-number">1.4.2.3.</span> <span class="nav-text">修改权限</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#默认权限"><span class="nav-number">1.4.2.4.</span> <span class="nav-text">默认权限</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#特殊权限"><span class="nav-number">1.4.2.5.</span> <span class="nav-text">特殊权限</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络基本配置"><span class="nav-number">1.5.</span> <span class="nav-text">网络基本配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#管道-重定向"><span class="nav-number">1.6.</span> <span class="nav-text">管道,重定向</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linux系统启动详解"><span class="nav-number">1.7.</span> <span class="nav-text">linux系统启动详解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#软件管理"><span class="nav-number">1.8.</span> <span class="nav-text">软件管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linux目录架构"><span class="nav-number">1.9.</span> <span class="nav-text">linux目录架构</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">djf</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">djf</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1. 循环语句for语句:嵌套循环时 尖朝上改变条件表达式,尖朝下改变初始化表达式. 2.函数构造代码块:  没有名称 给所有对象初始化 优先于构造函数 3.设计模式1.单例模式单例模式在程序设计中使用的频率非常之高，其设计的目的是为了在程序中提供唯一一个对象（保证只被构造一次），例如写入日志的log对象，windows的任务管理器实现（只能打开一个）。这里主要介绍单例模式使用Java的实现（包括">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Base of Java">
+<meta property="og:url" content="http://yoursite.com/2018/05/17/java_base/index.html">
+<meta property="og:site_name" content="我要养只大熊猫">
+<meta property="og:description" content="1. 循环语句for语句:嵌套循环时 尖朝上改变条件表达式,尖朝下改变初始化表达式. 2.函数构造代码块:  没有名称 给所有对象初始化 优先于构造函数 3.设计模式1.单例模式单例模式在程序设计中使用的频率非常之高，其设计的目的是为了在程序中提供唯一一个对象（保证只被构造一次），例如写入日志的log对象，windows的任务管理器实现（只能打开一个）。这里主要介绍单例模式使用Java的实现（包括">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-05-17T12:43:39.000Z">
+<meta property="article:modified_time" content="2020-03-28T03:41:29.103Z">
+<meta property="article:author" content="djf">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="I&#x2F;O">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2018/05/17/java_base/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>Base of Java | 我要养只大熊猫</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">我要养只大熊猫</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/17/java_base/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="djf">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我要养只大熊猫">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Base of Java
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-05-17 20:43:39" itemprop="dateCreated datePublished" datetime="2018-05-17T20:43:39+08:00">2018-05-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-28 11:41:29" itemprop="dateModified" datetime="2020-03-28T11:41:29+08:00">2020-03-28</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="1-循环语句"><a href="#1-循环语句" class="headerlink" title="1. 循环语句"></a>1. 循环语句</h2><h3 id="for语句"><a href="#for语句" class="headerlink" title="for语句:"></a>for语句:</h3><p>嵌套循环时 尖朝上改变条件表达式,尖朝下改变初始化表达式.</p>
+<h2 id="2-函数"><a href="#2-函数" class="headerlink" title="2.函数"></a>2.函数</h2><p>构造代码块:</p>
+<p> 没有名称 给所有对象初始化 优先于构造函数</p>
+<h2 id="3-设计模式"><a href="#3-设计模式" class="headerlink" title="3.设计模式"></a>3.设计模式</h2><h3 id="1-单例模式"><a href="#1-单例模式" class="headerlink" title="1.单例模式"></a>1.单例模式</h3><p>单例模式在程序设计中使用的频率非常之高，其设计的目的是为了在程序中提供唯一一个对象（保证只被构造一次），例如写入日志的log对象，windows的任务管理器实现（只能打开一个）。这里主要介绍单例模式使用Java的实现（包括饿汉式及懒汉式）。</p>
+<h4 id="1-饿汉式"><a href="#1-饿汉式" class="headerlink" title="1.饿汉式"></a>1.饿汉式</h4><p>饿汉式的单例模式理解起来是比较容易的，就是在单例类加载的时候就初始化需要单例的对象。实现也比较容易。</p>
+<p>public class Singleton{<br>​    private static Log logObj = new Log();</p>
+<p>​    public static Log getInstance(){<br>​        return logObj;<br>​    }<br>}</p>
+<h4 id="2-懒汉式"><a href="#2-懒汉式" class="headerlink" title="2.懒汉式"></a>2.懒汉式</h4><p>如果这个对象占用内存很大,一开始就初始化对象的话很浪费内存</p>
+<p>所有想出了下面这种办法:在我需要的时候再初始化</p>
+<p><strong>注意:这里面不考虑线程等等因素后期学到了再补充</strong></p>
+<p>public class Singleton{<br>​    private static Log logObj = null;</p>
+<p>​    public static Log getInstance(){<br>​        if(logObj == null){<br>​            logObj = new Log();<br>​        }<br>​        return logObj;<br>​    }<br>}</p>
+<h2 id="重载与重写"><a href="#重载与重写" class="headerlink" title="重载与重写"></a>重载与重写</h2><p>函数名相同参数不同叫重载,与返回值类型无关.</p>
+<p>函数定义一样,方法体不同叫重写.</p>
+<h2 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h2><p>多态指父类引用指向子类对象</p>
+<p>多态时只能调用父类中被子类重写或者子类没有的方法</p>
+<p>因为编译时检查引用发现是父类的就会去父类中寻找相应方法调用</p>
+<p>如果父类中没有该方法则编译失败</p>
+<p>运行时子类对象去子类中调用相应方法.</p>
+<p>如果是同名变量,只跟引用类型有关与具体指向对象无关</p>
+<h2 id="内部类"><a href="#内部类" class="headerlink" title="内部类"></a>内部类</h2><p>在Java中，可以将一个类定义在另一个类里面或者一个方法里面，这样的类称为内部类。</p>
+<p>广泛意义上的内部类一般来说包括这四种：成员内部类、局部内部类、匿名内部类和静态内部类。</p>
+<h4 id="1-成员内部类"><a href="#1-成员内部类" class="headerlink" title="1.成员内部类"></a>1.成员内部类</h4><p>成员内部类可以无条件访问外部类的所有成员属性和成员方法（包括private成员和静态成员）。</p>
+<p>不过要注意的是，当成员内部类拥有和外部类同名的成员变量或者方法时，会发生隐藏现象，即默认情况下访问的是成员内部类的成员。</p>
+<p>外部类必须要先创建内部类的对象才可以对内部类访问</p>
+<p>如果要创建成员内部类的对象，前提是必须存在一个外部类的对象。</p>
+<p>内部类可以被private修饰</p>
+<h4 id="2-局部内部类"><a href="#2-局部内部类" class="headerlink" title="2.局部内部类"></a>2.局部内部类</h4><h4 id="3-匿名内部类"><a href="#3-匿名内部类" class="headerlink" title="3.匿名内部类"></a>3.匿名内部类</h4><h4 id="4-静态内部类"><a href="#4-静态内部类" class="headerlink" title="4.静态内部类"></a>4.静态内部类</h4><h2 id="String类"><a href="#String类" class="headerlink" title="String类"></a>String类</h2><h2 id="其他内置对象"><a href="#其他内置对象" class="headerlink" title="其他内置对象"></a>其他内置对象</h2><p>system类</p>
+<h2 id="I-O流"><a href="#I-O流" class="headerlink" title="I/O流"></a>I/O流</h2><h3 id="BufferedWriter"><a href="#BufferedWriter" class="headerlink" title="BufferedWriter"></a>BufferedWriter</h3><p>将文本写入字符输出流，缓冲各个字符，从而提供单个字符、数组和字符串的高效写入。</p>
+<p>可以指定缓冲区的大小，或者接受默认的大小。在大多数情况下，默认值就足够大了。</p>
+<p>该类提供了 newLine() 方法，它使用平台自己的行分隔符概念，此概念由系统属性 line.separator 定义。</p>
+<p>并非所有平台都使用新行符 (‘\n’) 来终止各行。因此调用此方法来终止每个输出行要优于直接写入新行符。</p>
+<h3 id="OutputStreamWriter"><a href="#OutputStreamWriter" class="headerlink" title="OutputStreamWriter"></a>OutputStreamWriter</h3><p>将字节流转换为字符流，并制定编码方式 </p>
+<h3 id="FileOutputStream"><a href="#FileOutputStream" class="headerlink" title="FileOutputStream"></a>FileOutputStream</h3><p>指定文件来创建一个输出流(字节流),第二个boolean型参数为TRUE时表示继续往后写 </p>
+<p>为falses时覆盖原内容重写,默认为false.</p>
+<p>第一个参数可以用String类型来表示一个已存在的文件的文件名 </p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p><strong>泛型</strong></p>
+<p>​    一般使用在集合上</p>
+<p><strong>枚举</strong></p>
+<p>​    枚举里面的常量是类的实例</p>
+<p>​    枚举里面可以有 有参构造方法</p>
+<p>​    在实例后面跟加上参数就行</p>
+<p>​    枚举里面可以有抽象方法</p>
+<p>​    在实例后面实现他就行</p>
+<p><strong>静态导入</strong></p>
+<p>​    import static ….</p>
+<p><strong>自动拆装箱</strong></p>
+<p><strong>增强for循环</strong></p>
+<p>​    for(类型 引用变量:集合)</p>
+<p>​    底层和迭代器一样  为了替换迭代器  简化代码</p>
+<p>​    原理  实现了Iterable接口  List和Set  Map不能使用</p>
+<h2 id="反射"><a href="#反射" class="headerlink" title="反射"></a><strong>反射</strong></h2><p>​    原理:</p>
+<p>​    在框架开发中,都是基于配置文件开发的</p>
+<p>​    在[配置文件中配置了类,可以通过反射得到类中的所有内容,可以让某个方法来执行</p>
+<p>使用反射首先需要得到Class类</p>
+<p>​    三种方式:</p>
+<p>​    – 类名.class</p>
+<p>​    – 对象.getClass()</p>
+<p>​    – 使用Class.forName(“路径”)</p>
+<h3 id="操作构造方法"><a href="#操作构造方法" class="headerlink" title="操作构造方法"></a>操作构造方法</h3><p>先得到Class c</p>
+<p>c.getInstance()//得到无参数的实例化对象</p>
+<p>c.getConstructors() 得到所有构造方法</p>
+<p>c.getConstructor(里面是你要得到的有参构造方法的类型.class)</p>
+<h3 id="操作属性"><a href="#操作属性" class="headerlink" title="操作属性"></a>操作属性</h3><p>先得到类Class c</p>
+<p>c.getDeclaredFields()  : 得到所有属性</p>
+<p>Field f = c.getDeclaredFields(“属性名”) </p>
+<p>f.set(对象引用,”属性值”)</p>
+<p>如果你要操作的是私有属性还要执行一个方法</p>
+<p>f.setAccessible(true)   :  设置可以操作私有属性</p>
+<h3 id="操作普通方法"><a href="#操作普通方法" class="headerlink" title="操作普通方法"></a>操作普通方法</h3><p>​    先得到类Class c</p>
+<p>​    c.getDeclaredMegods()   :  得到所有方法</p>
+<p>​    Method m= c.getDeclaredMegod(“方法名”,”方法参数类型.class”)</p>
+<p>​    m.invoke(对象实例,”方法参数值”)</p>
+<p>操作静态方法时第一个参数填 null</p>
+<p><strong>可变参数</strong></p>
+<p>​    public void test(int…nums){}</p>
+<p>​    int  为参数类型</p>
+<p>​    nums(自定义的参数数组名)  :</p>
+<p>​        为一个数组储存传进去的参数</p>
+<p>可以和其他参数共存,只能存在一个可变参数,需要放在参数列表最后面</p>
+<h1 id="GUI"><a href="#GUI" class="headerlink" title="GUI"></a>GUI</h1><h2 id="component-组件"><a href="#component-组件" class="headerlink" title="component(组件)"></a>component(组件)</h2><h3 id="button-按钮"><a href="#button-按钮" class="headerlink" title="button(按钮)"></a>button(按钮)</h3><h3 id="lable-标签"><a href="#lable-标签" class="headerlink" title="lable(标签)"></a>lable(标签)</h3><p>一般用来封装文字</p>
+<h3 id="Checkbox-复选框"><a href="#Checkbox-复选框" class="headerlink" title="Checkbox(复选框)"></a>Checkbox(复选框)</h3><h3 id="TextComponent-文本组件"><a href="#TextComponent-文本组件" class="headerlink" title="TextComponent(文本组件)"></a>TextComponent(文本组件)</h3><h4 id="TextArea-文本域"><a href="#TextArea-文本域" class="headerlink" title="TextArea(文本域)"></a>TextArea(文本域)</h4><h4 id="TextField-文本框"><a href="#TextField-文本框" class="headerlink" title="TextField(文本框)"></a>TextField(文本框)</h4><h2 id="Container-容器"><a href="#Container-容器" class="headerlink" title="Container(容器)"></a>Container(容器)</h2><p>该类是一个特殊的组件,可以通过add()方法添加其他组件进来.</p>
+<h3 id="Window-窗口"><a href="#Window-窗口" class="headerlink" title="Window(窗口)"></a>Window(窗口)</h3><h4 id="Frame-框架或者说小窗体"><a href="#Frame-框架或者说小窗体" class="headerlink" title="Frame(框架或者说小窗体 )"></a>Frame(框架或者说小窗体 )</h4><h4 id="Dialog-对话框"><a href="#Dialog-对话框" class="headerlink" title="Dialog(对话框)"></a>Dialog(对话框)</h4><h5 id="FileDialog-文件对话框"><a href="#FileDialog-文件对话框" class="headerlink" title="FileDialog(文件对话框)"></a>FileDialog(文件对话框)</h5><h3 id="Panel-面板"><a href="#Panel-面板" class="headerlink" title="Panel(面板)"></a>Panel(面板)</h3><h2 id="布局"><a href="#布局" class="headerlink" title="布局"></a>布局</h2><h3 id="FlowLayout-流式布局"><a href="#FlowLayout-流式布局" class="headerlink" title="FlowLayout(流式布局)"></a>FlowLayout(流式布局)</h3><p>从左到有右排列</p>
+<p>自动换行,组件默认自动居中</p>
+<p>Panel(面板)默认的布局</p>
+<h3 id="BorderLayout-边界布局"><a href="#BorderLayout-边界布局" class="headerlink" title="BorderLayout(边界布局)"></a>BorderLayout(边界布局)</h3><p>Frame(框架)默认的布局</p>
+<h3 id="GridLayout-网格布局"><a href="#GridLayout-网格布局" class="headerlink" title="GridLayout(网格布局)"></a>GridLayout(网格布局)</h3><h3 id="Cardlayout-卡片布局"><a href="#Cardlayout-卡片布局" class="headerlink" title="Cardlayout(卡片布局)"></a>Cardlayout(卡片布局)</h3><h3 id="GridBagLayout-网格包布局"><a href="#GridBagLayout-网格包布局" class="headerlink" title="GridBagLayout(网格包布局)"></a>GridBagLayout(网格包布局)</h3><h1 id="jar"><a href="#jar" class="headerlink" title="jar"></a>jar</h1><p>jar -cvfm -路径 -jar包名 txt 需要打包的包名</p>
+<p>配置jar包信息</p>
+<p>自定一个txt文件写入主函数信息</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+              <a href="/tags/I-O/" rel="tag"># I/O</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/04/17/java_socket/" rel="prev" title="Socket of Java">
+      <i class="fa fa-chevron-left"></i> Socket of Java
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/05/30/java_web/" rel="next" title="Web of Java">
+      Web of Java <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-循环语句"><span class="nav-number">1.</span> <span class="nav-text">1. 循环语句</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#for语句"><span class="nav-number">1.1.</span> <span class="nav-text">for语句:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-函数"><span class="nav-number">2.</span> <span class="nav-text">2.函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-设计模式"><span class="nav-number">3.</span> <span class="nav-text">3.设计模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-单例模式"><span class="nav-number">3.1.</span> <span class="nav-text">1.单例模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-饿汉式"><span class="nav-number">3.1.1.</span> <span class="nav-text">1.饿汉式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-懒汉式"><span class="nav-number">3.1.2.</span> <span class="nav-text">2.懒汉式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重载与重写"><span class="nav-number">4.</span> <span class="nav-text">重载与重写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多态"><span class="nav-number">5.</span> <span class="nav-text">多态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内部类"><span class="nav-number">6.</span> <span class="nav-text">内部类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-成员内部类"><span class="nav-number">6.0.1.</span> <span class="nav-text">1.成员内部类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-局部内部类"><span class="nav-number">6.0.2.</span> <span class="nav-text">2.局部内部类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-匿名内部类"><span class="nav-number">6.0.3.</span> <span class="nav-text">3.匿名内部类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-静态内部类"><span class="nav-number">6.0.4.</span> <span class="nav-text">4.静态内部类</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#String类"><span class="nav-number">7.</span> <span class="nav-text">String类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他内置对象"><span class="nav-number">8.</span> <span class="nav-text">其他内置对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#I-O流"><span class="nav-number">9.</span> <span class="nav-text">I&#x2F;O流</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#BufferedWriter"><span class="nav-number">9.1.</span> <span class="nav-text">BufferedWriter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OutputStreamWriter"><span class="nav-number">9.2.</span> <span class="nav-text">OutputStreamWriter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FileOutputStream"><span class="nav-number">9.3.</span> <span class="nav-text">FileOutputStream</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他"><span class="nav-number">10.</span> <span class="nav-text">其他</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#反射"><span class="nav-number">11.</span> <span class="nav-text">反射</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#操作构造方法"><span class="nav-number">11.1.</span> <span class="nav-text">操作构造方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作属性"><span class="nav-number">11.2.</span> <span class="nav-text">操作属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作普通方法"><span class="nav-number">11.3.</span> <span class="nav-text">操作普通方法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GUI"><span class="nav-number"></span> <span class="nav-text">GUI</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#component-组件"><span class="nav-number">1.</span> <span class="nav-text">component(组件)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#button-按钮"><span class="nav-number">1.1.</span> <span class="nav-text">button(按钮)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lable-标签"><span class="nav-number">1.2.</span> <span class="nav-text">lable(标签)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Checkbox-复选框"><span class="nav-number">1.3.</span> <span class="nav-text">Checkbox(复选框)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TextComponent-文本组件"><span class="nav-number">1.4.</span> <span class="nav-text">TextComponent(文本组件)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#TextArea-文本域"><span class="nav-number">1.4.1.</span> <span class="nav-text">TextArea(文本域)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TextField-文本框"><span class="nav-number">1.4.2.</span> <span class="nav-text">TextField(文本框)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Container-容器"><span class="nav-number">2.</span> <span class="nav-text">Container(容器)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Window-窗口"><span class="nav-number">2.1.</span> <span class="nav-text">Window(窗口)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Frame-框架或者说小窗体"><span class="nav-number">2.1.1.</span> <span class="nav-text">Frame(框架或者说小窗体 )</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Dialog-对话框"><span class="nav-number">2.1.2.</span> <span class="nav-text">Dialog(对话框)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#FileDialog-文件对话框"><span class="nav-number">2.1.2.1.</span> <span class="nav-text">FileDialog(文件对话框)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Panel-面板"><span class="nav-number">2.2.</span> <span class="nav-text">Panel(面板)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#布局"><span class="nav-number">3.</span> <span class="nav-text">布局</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#FlowLayout-流式布局"><span class="nav-number">3.1.</span> <span class="nav-text">FlowLayout(流式布局)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BorderLayout-边界布局"><span class="nav-number">3.2.</span> <span class="nav-text">BorderLayout(边界布局)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GridLayout-网格布局"><span class="nav-number">3.3.</span> <span class="nav-text">GridLayout(网格布局)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cardlayout-卡片布局"><span class="nav-number">3.4.</span> <span class="nav-text">Cardlayout(卡片布局)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GridBagLayout-网格包布局"><span class="nav-number">3.5.</span> <span class="nav-text">GridBagLayout(网格包布局)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#jar"><span class="nav-number"></span> <span class="nav-text">jar</span></a></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">djf</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">djf</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

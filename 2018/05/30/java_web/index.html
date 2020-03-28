@@ -1,0 +1,1494 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="javaWeb上传下载发邮件上传1.上传对表单的限制 method&#x3D;”post” enctype&#x3D;”multipaert&#x2F;form-data” 表单中需要添加文件项 : 2.上传对Servlet的限制 request.getParamater(“xxx”);这个方法在文件表单中没用了 ServletInputStream request &#x3D; reques.getInputStream();包含整个">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Web of Java">
+<meta property="og:url" content="http://yoursite.com/2018/05/30/java_web/index.html">
+<meta property="og:site_name" content="我要养只大熊猫">
+<meta property="og:description" content="javaWeb上传下载发邮件上传1.上传对表单的限制 method&#x3D;”post” enctype&#x3D;”multipaert&#x2F;form-data” 表单中需要添加文件项 : 2.上传对Servlet的限制 request.getParamater(“xxx”);这个方法在文件表单中没用了 ServletInputStream request &#x3D; reques.getInputStream();包含整个">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-05-30T14:57:39.000Z">
+<meta property="article:modified_time" content="2020-03-08T18:23:20.883Z">
+<meta property="article:author" content="djf">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="Servlet">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2018/05/30/java_web/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>Web of Java | 我要养只大熊猫</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">我要养只大熊猫</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/30/java_web/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="djf">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我要养只大熊猫">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Web of Java
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-05-30 22:57:39" itemprop="dateCreated datePublished" datetime="2018-05-30T22:57:39+08:00">2018-05-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-09 02:23:20" itemprop="dateModified" datetime="2020-03-09T02:23:20+08:00">2020-03-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="javaWeb"><a href="#javaWeb" class="headerlink" title="javaWeb"></a>javaWeb</h1><h2 id="上传下载发邮件"><a href="#上传下载发邮件" class="headerlink" title="上传下载发邮件"></a>上传下载发邮件</h2><h3 id="上传"><a href="#上传" class="headerlink" title="上传"></a>上传</h3><p>1.上传对表单的限制</p>
+<p>method=”post”</p>
+<p>enctype=”multipaert/form-data”</p>
+<p>表单中需要添加文件项</p>
+<p>:<input type="file" name="xxx"/></p>
+<p>2.上传对Servlet的限制</p>
+<p>request.getParamater(“xxx”);这个方法在文件表单中没用了</p>
+<p>ServletInputStream request = reques.getInputStream();包含整个请求体</p>
+<p>1.创建工厂 DiskFileItemFactory  factory = new DiskFileItemFactory(new File(“”));</p>
+<p>2.创建解析器 ServerFileUpload sfu = new ServerFileUpload(factory);</p>
+<p>3.使用解析器来解析request得到FileItem集合:</p>
+<p>List<FileItem>fileItemList = C.parseRequest(request);</p>
+<p>FileITem</p>
+<p>isFormFiled();是否 为普通表单项</p>
+<p>getFiledName();得到当前表单项名称</p>
+<p>getString();得到表单项的值</p>
+<p>getName();返回文件名称</p>
+<p>getSize();返回上传文件的字节数</p>
+<p>getInputStream();返回上传文件对应的输入流</p>
+<p>write(File destFile);把文件内容保存到指定文件</p>
+<p>上传的细节:</p>
+<p>文件必须保存在WEB-INF目录下</p>
+<p>文件名是绝对路径,需要切割</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">String filename = fi2.getName();</span><br><span class="line"><span class="keyword">int</span> index = filename.lastIndexOf(<span class="string">"\\"</span>);</span><br><span class="line"><span class="keyword">if</span>(index!=-<span class="number">1</span>)&#123;</span><br><span class="line">    filename = filename.sunstring(index+<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>文件名乱码问题:</p>
+<p>servlertFileUpload.setHeaderEncoding(“utf-8”);//优选级高</p>
+<p>文件名同名问题:</p>
+<p>filename = CommomUtils.uuid()+”_”+filename;</p>
+<p>目录打散:</p>
+<p>不能在同一目录下存放太多文件</p>
+<p>要分目录存放</p>
+<p>上传文件大小限制:  </p>
+<p>在解析之前执行</p>
+<p>单个文件大小限制</p>
+<p>sfu.setFileSizeMax(100*1024);</p>
+<p>整个请求所有数据大小限制</p>
+<p>sfu.setSizeMax(1024*1024,new file(“  “));</p>
+<p>缓存大小与临时目录</p>
+<p>DiskFileItemFactory  factory = new DiskFileItemFactory(20*1024);</p>
+<h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><p>下载就是向客户端响应字节数据!</p>
+<p>原来我们响应的都是HTML的字符数据!</p>
+<p>把一个文件编程字节数组,使用response.getOutputStream()来响应给浏览器!!!</p>
+<p>下载的要求</p>
+<p>两个头一个流</p>
+<p>Contrn-type :你传递给客户端是什么MIME类型,例如:image/pjpeg</p>
+<p>Contentype-disposition: 它的默认值为inline</p>
+<p>表示在浏览器窗口中打开</p>
+<p>attachment;filename=”a.mp3”;</p>
+<p>下载文件之文件名乱码</p>
+<p>通用方法:</p>
+<p>String filename  = new String(“流光飞舞.MP3”.getBytes(gbk),”iso8859-1”);</p>
+<h3 id="邮件"><a href="#邮件" class="headerlink" title="邮件"></a>邮件</h3><p>邮件协议:</p>
+<p>SMTP:发邮件协议</p>
+<p>POP3:收邮件协议</p>
+<p>IMAP:收发邮件协议</p>
+<p>邮件服务器名称:</p>
+<p>smtp服务器的端口号为25 ,服务器名称为smtp.xxx.xxx</p>
+<p>p0p3服务器的端口号为110,服务器名称为pop3.xxx.xxx</p>
+<p>例如</p>
+<p>163.:smtp.163.com 和pop3.163.com</p>
+<p>………</p>
+<p>火狐浏览器使用的是base64编码</p>
+<p>base64编码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String s = <span class="string">"username"</span>;</span><br><span class="line">BASE64Encoder base = <span class="keyword">new</span> BASE64Encoder();</span><br><span class="line">s = base.encode(s.getBytes(<span class="string">"UTF-8"</span>));</span><br></pre></td></tr></table></figure>
+
+<p>解码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">BASE64Decoder decoder = <span class="keyword">new</span> BASE64Decoder();</span><br><span class="line"></span><br><span class="line"><span class="keyword">byte</span>[] bytes = decoder.decodeBuffer(s);</span><br></pre></td></tr></table></figure>
+
+<p>其他浏览器使用的是URL编码</p>
+<p>发邮件:</p>
+<p>1.导包</p>
+<p>​    mail.jar</p>
+<p>​    actvition.jar</p>
+<p>核心类</p>
+<p>1.Session</p>
+<p>和Connection作用相似 ,表示与服务器连接</p>
+<p>2.MimeMessage</p>
+<p>表示一个邮件对象和,调用setForm()</p>
+<p>设置发件人,设置收件人,设置主题,设置正文</p>
+<p>3.TransPort</p>
+<p>一个功能:发邮件</p>
+<p>得到Session</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Session.getInstanse(Properties,Authenticator);</span><br><span class="line"></span><br><span class="line">Properites props = <span class="keyword">new</span> Properties();</span><br><span class="line">props.setProperty(<span class="string">"mail.host"</span>,<span class="string">"smtp.163.com"</span>);</span><br><span class="line">props.setProperty(<span class="string">"mail.smtp.auth"</span>,<span class="string">"true);</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">                  Authenticator auth = new Authenticator()&#123;</span></span><br><span class="line"><span class="string">                      protected PasswordAuthenitication getPasswordAuthentication()&#123;</span></span><br><span class="line"><span class="string">                          return new PasswordAuthentication("</span>用户名<span class="string">","</span>密码<span class="string">");</span></span><br><span class="line"><span class="string">                      &#125;</span></span><br><span class="line"><span class="string">                  &#125;;</span></span><br><span class="line"><span class="string">  Session session = Session.getInstace(props,auth);</span></span><br></pre></td></tr></table></figure>
+
+<p>得到MimeMessage</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">MimeMessage msg = <span class="keyword">new</span> MimeMessage(session);</span><br><span class="line">msg.setFrom(<span class="keyword">new</span> InternetAddress(<span class="string">"用户名@163.com"</span>));</span><br><span class="line">msg.setRecipients(RecipienType.To,<span class="string">"用户名@126.com"</span>);</span><br><span class="line">msg.setRecipients(RecipienType.CC,<span class="string">"用户名@126.com"</span>);<span class="comment">//设置抄送</span></span><br><span class="line">msg.setRecipients(RecipienType.BCC,<span class="string">"用户名@126.com"</span>);<span class="comment">//设置暗送</span></span><br><span class="line">msg.setSubject(<span class="string">"标题"</span>);</span><br><span class="line">msg.setContent(<span class="string">"主题"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>发送</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Transport.send(msg);</span><br></pre></td></tr></table></figure>
+
+<p>发带有附件的邮件</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">.....</span><br><span class="line">MimeMultipart list =<span class="keyword">new</span> MimeMultipart();<span class="comment">//一个集合</span></span><br><span class="line">MimeBodypart part1 = <span class="keyword">new</span> MimeBodyPart();</span><br><span class="line"><span class="comment">//设置邮件主题内容</span></span><br><span class="line">part1.setContent(<span class="string">"邮件主题1"</span>,<span class="string">"text/html"</span>);</span><br><span class="line">list.add(part1);</span><br><span class="line">MimeBodypart part2= <span class="keyword">new</span> MimeBodyPart();</span><br><span class="line"><span class="comment">//设置邮件主题内容</span></span><br><span class="line">part2.attachFile(<span class="keyword">new</span> File(<span class="string">""</span>);<span class="comment">//设置附件内容</span></span><br><span class="line"> part2.setFilename(MimeUtility.encodingText(<span class="string">"文件名"</span>);</span><br><span class="line">   list.add(part2;              </span><br><span class="line">msg.setContent(list);</span><br><span class="line"></span><br><span class="line">.....</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="mailUtils工具使用发邮件"><a href="#mailUtils工具使用发邮件" class="headerlink" title="mailUtils工具使用发邮件"></a>mailUtils工具使用发邮件</h3><p>依赖包还是上面那两个</p>
+<p>Session session</p>
+<p>Session</p>
+<h2 id="http协议"><a href="#http协议" class="headerlink" title="http协议"></a><u>http</u>协议</h2><p>​    httpwatch: 抓包工具  抓取协议头</p>
+<p>​    相应协议:</p>
+<p>html操作思想:</p>
+<p>通过标签把数据包装起来;然后改变标签的属性让数据呈现各种不同的效果</p>
+<h2 id="Listener-监听器"><a href="#Listener-监听器" class="headerlink" title="Listener(监听器)"></a>Listener(监听器)</h2><p>它是一个接口,内容由我们实现</p>
+<p>它需要注册,例如注册在按钮上.</p>
+<p>监听器中的方法,会在特殊事件发生时被调用</p>
+<p>事件源:三大域(Servler httpSession Servlet)</p>
+<p>每个与有生死监听和属性监听</p>
+<p>域()Listener,</p>
+<p>两个方法一个在出生时调用,一个在死亡时调用</p>
+<p>域AttributeLister</p>
+<p>三个方法</p>
+<p>添加属性时调用</p>
+<p>修改属性时调用</p>
+<p>删除属性时调用</p>
+<p>创建一个类实现上面的监听器接口</p>
+<p>web.xml配置</p>
+<listener>
+
+<p>​    <listener-class> 包名+类名&lt;\listener&gt;</p>
+<p>&lt;\listenter&gt;</p>
+<p>感知监听:HttpSessionBindingListener</p>
+<p>不需要注册xml配置文件</p>
+<p>绑定在javaBean中,由javaBean实现接口</p>
+<p>session自动重生(序列化)</p>
+<p>关闭服务器把Session保存在文件中</p>
+<p>取消自动重生需要在 Context.xml文件下</p>
+<p>Context元素下</p>
+<p>配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;Manager pathname&#x3D;&quot;&quot;&#x2F;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>session钝化和活化</p>
+<p>钝化:指定时间不是使用后保存在文件</p>
+<p>活化:从文件读取到内存,活化后文件不会消失</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Context</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">Manager</span> <span class="attr">classname</span>=</span></span><br><span class="line"><span class="tag">	"<span class="attr">org.apache.catalina.session.PersistentManager</span>" </span></span><br><span class="line"><span class="tag">	<span class="attr">naxIdleSwap</span>=<span class="string">"1"</span>&gt;</span>//1分钟</span><br><span class="line">	<span class="tag">&lt;<span class="name">Store</span> <span class="attr">classname</span>=<span class="string">"org.apache.catalina.session.FileStore"</span>	<span class="attr">directory</span>=<span class="string">"mysession"</span>/&gt;</span>//路径相对项目路径下</span><br><span class="line">	<span class="tag">&lt;/<span class="name">Manager</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Context</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>javaBean需要实现序列化接(java.io.Serializable)才能和Session一起钝化和序列化</p>
+<p>国际化</p>
+<h2 id="Filter-过滤器"><a href="#Filter-过滤器" class="headerlink" title="Filter(过滤器)"></a>Filter(过滤器)</h2><p>它会在一组资源的前面执行</p>
+<p>它可以让请求得到目标资源,也可以不让请求到达!</p>
+<p>–过滤器有拦截请求的能力!</p>
+<p>Filter接口</p>
+<p>void init(FilterConfig)</p>
+<p>创建之后,马上执行:Filter会在服务器启动时就会创建!</p>
+<p>void destory()</p>
+<p>销毁之前执行,在服务器关闭时销毁</p>
+<p>void doFilter()</p>
+<p>每次过滤时都会执行</p>
+<p>Filter是单例的</p>
+<p>web.xml中配置</p>
+<p>跟servlet一样的配置</p>
+<p>url-pattern通常设置为/*</p>
+<p>表示为拦截所有路径的</p>
+<p>四种拦截方式</p>
+<p>​    <dispatcher>REQUEST</dispatcher>默认的</p>
+<p>​    <dispatcher>FORWARD</dispatcher></p>
+<p>​    <dispatcher>INCLUDE</dispatcher></p>
+<p>​    <dispatcher>ERROR</dispatcher></p>
+<p>执行顺序取决于mapping的配置顺序</p>
+<h3 id="页面静态化"><a href="#页面静态化" class="headerlink" title="页面静态化"></a>页面静态化</h3><p>目标:</p>
+<p>给出一个过滤器,把servlet请求的资源所做输出保存到html中,重定向到html页面.二次访问时,这个html已经存在,那么直接重定向,不在去访问Servlet</p>
+<h2 id="servlet"><a href="#servlet" class="headerlink" title="servlet"></a>servlet</h2><h3 id="浏览器访问Servlet"><a href="#浏览器访问Servlet" class="headerlink" title="浏览器访问Servlet"></a>浏览器访问Servlet</h3><p>​    给Servlet指定一个路径(让Servlet与一个路径绑定在一起) 然后浏览器访问Servlet路径</p>
+<p>&lt;servlet&gt;</p>
+<p>​    &lt;servlet-name&gt;名称(与路径绑定的名称,自己随意定义)&lt;/servlet-name&gt;</p>
+<p>​    &lt;servlet-class&gt;Servlet类名(带包名)&lt;/servlet-class&gt;</p>
+<p>&lt;/servlet&gt;</p>
+<p>&lt;servlet-mapping&gt;</p>
+<p>​    &lt;servlet-name&gt;名称(与上面相同即可)&lt;/servlet-name&gt;</p>
+<p>​    &lt;url-pattern&gt;路径(浏览器访问的路径 自己随意定义)&lt;/url-pattern&gt;</p>
+<p>&lt;/servlet-mapping&gt;</p>
+<p>浏览器访问:<a href="http://localhost:8080/项目名(或者说工程名)/路径(上面自己定义的不是类的路径)" target="_blank" rel="noopener">http://localhost:8080/项目名(或者说工程名)/路径(上面自己定义的不是类的路径)</a></p>
+<p>​    &lt;url-pattern&gt;可以有多个路径: 即浏览器可以有多个访问路径</p>
+<p>​    路径可以使用通配符(*)</p>
+<p>​    /servlet/*</p>
+<p>​    *.do  :后缀名匹配  符合这个后缀名的都匹配</p>
+<p>​        浏览器访问示例:</p>
+<p>​    <a href="http://localhost:8080/类所在包名/*.do" target="_blank" rel="noopener">http://localhost:8080/类所在包名/*.do</a></p>
+<p>​    <a href="http://localhost:8080/类所在包名" target="_blank" rel="noopener">http://localhost:8080/类所在包名</a></p>
+<p>​    /*</p>
+<p>​    生命周期方法</p>
+<p>​    void init(servletConfig) 创建之后(出生之后)执行一次</p>
+<p>​    void service(ServletRequest request ,ServletResponse response):每次请求都会执行</p>
+<p>​    void destroy() ; 销毁之前(临死之前)执行一次</p>
+<p>servlet类由我们来写,但对象由服务器来创建,并且由服务器来调用相应的方法</p>
+<p>ServletConfig : </p>
+<p>​    一个ServletConfig对象,对象一段web.xml中Servlet的配置信息</p>
+<p>​    功能:</p>
+<p>​    String getServletname() :</p>
+<p>​         获取&lt;servlet-name&gt;&lt;/servlet-name&gt;的内容</p>
+<p>​    servletContext getServletContext():</p>
+<p>​        获取Servlet上下文对象</p>
+<h3 id="servlet与线程安全"><a href="#servlet与线程安全" class="headerlink" title="servlet与线程安全"></a>servlet与线程安全</h3><p>servlet是单例对象 可以有多个Servlet类</p>
+<p>​    <strong>注意:</strong>  线程不安全,效率高</p>
+<p>不要在Servley中创建成员,创建局部变量即可</p>
+<p>可以创建无状态成员</p>
+<p>可以创建有状态成员,但状态必须为只读的</p>
+<h3 id="Servlet对象创建"><a href="#Servlet对象创建" class="headerlink" title="Servlet对象创建"></a>Servlet对象创建</h3><p>默认情况下,服务器会在某个Servlet第一次收到请求时创建,也可以在web.xml中进行配置,使服务器启动时就创建Servlet</p>
+<p>在&lt;servlet&gt;标签中添加</p>
+<p>&lt;load-on-startup&gt;数值(非负整数)&lt;/load-on-startup&gt;</p>
+<p>服务器对标签里面的数值进行排序,数值小的先被创建</p>
+<h3 id="web-xml"><a href="#web-xml" class="headerlink" title="web.xml"></a>web.xml</h3><p>​    每个完整的web应用中都需要有web.xml,但我们不知道所有的web.xml文件都有一个共同的父文件,它在Tomcat的conf/web.xnl路径</p>
+<p>​    具体分析写在那个web.xml文件中</p>
+<h3 id="servlet与反射"><a href="#servlet与反射" class="headerlink" title="servlet与反射"></a>servlet与反射</h3><p>浏览器输入路径与 &lt;url-pattern&gt;中的值进行匹配</p>
+<p>匹配之后得到&lt;servlet-name&gt;  然后得到&lt;servlet-class&gt;</p>
+<p>即得到了一个字符串</p>
+<p>然后使用Class类中的forName(String classname)</p>
+<p>得到相应的Servlet类对象</p>
+<p>得到对象之后相应的操作可以去java基础查看反射的基本使用</p>
+<h3 id="ServletContext对象"><a href="#ServletContext对象" class="headerlink" title="ServletContext对象"></a>ServletContext对象</h3><p>​    –javaweb四大域对象之一</p>
+<p>​    –pageContext</p>
+<p>​    –ServletRequest</p>
+<p>​    –HttpSession</p>
+<p>​    –ServletContext</p>
+<p>所有域对象都有存储数据的功能,因为域对象内部一个Map用来存储数据,</p>
+<p>一个Servlet对象存,另一个对象取</p>
+<h3 id="获取类路径资源"><a href="#获取类路径资源" class="headerlink" title="获取类路径资源"></a>获取类路径资源</h3><p>Class的路径(/a.txt)</p>
+<p>表示相对classes目录下的a.txt </p>
+<p>​    一个项目只有一个ServletContext对象 可以有N个Servlet对象</p>
+<h3 id="状态码"><a href="#状态码" class="headerlink" title="状态码"></a>状态码</h3><p>response.setStatus(状态码,信息);</p>
+<h3 id="Response"><a href="#Response" class="headerlink" title="Response"></a>Response</h3><p>发送响应头 响应头是一个键值对(存在一个键对应多个值)</p>
+<h4 id="常用响应头"><a href="#常用响应头" class="headerlink" title="常用响应头:"></a>常用响应头:</h4><p>​    <meta>可以也可以设置响应头</p>
+<p>​    setHeader(String name,String value)</p>
+<p>Content-Type</p>
+<p>Refresh:</p>
+<p>​    定时重定向</p>
+<p>​    setHeader(“Refresh”,”5:URL=/myjavaweb/Servlet”)</p>
+<p>Location:</p>
+<p>​    重定向的地址</p>
+<p>​    快捷重定向方法</p>
+<p>​    response.setRedirect(“url”)</p>
+<h4 id="response设置响应头"><a href="#response设置响应头" class="headerlink" title="response设置响应头"></a>response设置响应头</h4><p>​    –setHeader(String name,String value)</p>
+<p>​    给定名字的响应头设置值</p>
+<p>​    –addHeader(String name,String value)</p>
+<p>​    给一个键多个值得响应头增加值</p>
+<p>​    –setIntHeader(String name,int value)</p>
+<p>​    专门给值为int类型的响应头设置值</p>
+<h4 id="禁用浏览器缓存"><a href="#禁用浏览器缓存" class="headerlink" title="禁用浏览器缓存"></a>禁用浏览器缓存</h4><p>设置下面三个响应头</p>
+<p>Cache-Control : no-cache    </p>
+<p>pragma :no-cache</p>
+<p>expires:-1</p>
+<h4 id="response两个输出流"><a href="#response两个输出流" class="headerlink" title="response两个输出流"></a>response两个输出流</h4><p> ServletOutputStream :用来向客户端发送字节数据(图片)</p>
+<p>response.getOutputStream()</p>
+<p>PrintWriter : 用来向客户端发送字符数据!需要设置编码</p>
+<p>response.getWriter()</p>
+<p>!!!两个不能同时使用</p>
+<h3 id="Request"><a href="#Request" class="headerlink" title="Request"></a>Request</h3><p>封装了客户端所有的请求数据</p>
+<p>请求行</p>
+<p>请求头</p>
+<p>空行</p>
+<p>请求体(空)</p>
+<h4 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h4><p>String  getRemoteAddr()  获取客户端ip地址</p>
+<p>String getMothed()  获取请求方式  get  post</p>
+<p> String getHeader(String name)  获取请求指定请求头的值</p>
+<p>String getScheme()  获取协议</p>
+<p>String getServletName() 获取服务器名</p>
+<p>String getServletPort() 获取服务器端口</p>
+<p>String getContextPath()  获取项目名  /myjavaweb</p>
+<p>String getServletpath() 获取Servlet路径 /Servlet</p>
+<p>String getQueryString()  获取参数部分,即url问号后面带的参数和值</p>
+<p>String getRequestURI()获取请求URi ,等于项目名+Servlet路径</p>
+<p>String getRequestURL()   获取请求URL,等于不包含参数的整个请求路径</p>
+<h4 id="请求头"><a href="#请求头" class="headerlink" title="请求头"></a>请求头</h4><p>referer</p>
+<p>表示请求的来源</p>
+<p>User-Agent</p>
+<p>识别用户浏览器类型</p>
+<h4 id="获取请求参数"><a href="#获取请求参数" class="headerlink" title="获取请求参数"></a>获取请求参数</h4><p>请求参数存在一个参数多个值</p>
+<p>String getParameter(String name):  获取指定名称的请求参数</p>
+<h4 id="请求转发和请求包含"><a href="#请求转发和请求包含" class="headerlink" title="请求转发和请求包含"></a>请求转发和请求包含</h4><p>请求转发</p>
+<p>转发的最后一个Servlet才设置响应体</p>
+<p>其他Servlet只设置响应头包括浏览器直接请求的Servlet</p>
+<p>公用一个Resquest</p>
+<p>request.getResquestDispatcher(url).forward(request,response)</p>
+<p>请求包含</p>
+<p>request.getResquestDispatcher(url).include(request,response)</p>
+<p>每个Servlet都可以设置响应体</p>
+<h4 id="编码"><a href="#编码" class="headerlink" title="编码"></a>编码</h4><p>iso-8859-1(不支持中文)</p>
+<p>gbk(系统默认编码,中国的国标码)</p>
+<p>utf-8(万国码,支持全世界的编码,大多数人使用这个)</p>
+<p>请求编码</p>
+<p>响应编码</p>
+<p>post请求的响应编码可以自己设置</p>
+<p>get请求不可以设置需要到Servlet.xml文件中进行配置</p>
+<p>到&lt;Connentor&gt;标签内增加一个属性</p>
+<p>URLEncoding=”UTF-8”</p>
+<p>不设置默认为iso-8859-1</p>
+<p>URL编码</p>
+<p>get请求中没有URL编码 容易丢失数据</p>
+<p>表单提交默认使用了URL编码</p>
+<p>先得到字节数组 在把字节数组中的每一个int加上256</p>
+<p>在转换成16进制然后再加上前面%</p>
+<h4 id="路径"><a href="#路径" class="headerlink" title="路径"></a>路径</h4><p>转发和包含中写的路径</p>
+<p>如果以”/“开头相对当前项目路径</p>
+<p><a href="http://localhost:8080/myjavaweb" target="_blank" rel="noopener">http://localhost:8080/myjavaweb</a></p>
+<p>不以”/“开头则相对Servlet路径</p>
+<p>重定向路径</p>
+<p>以”/“开头相对当前主机</p>
+<p><a href="http://localhost:8080/" target="_blank" rel="noopener">http://localhost:8080/</a></p>
+<p>页面中超链接和表单路径</p>
+<p>以”/“开头则与重定向一样是相对主机路径</p>
+<p>如果不以”/“开头那么相对当前html的路径</p>
+<p>ServletContext获取资源路径</p>
+<p>相对项目路径</p>
+<p>ClassLoader获取资源路径</p>
+<p>不能以”/“开头</p>
+<p>相对classes路径</p>
+<p>即<a href="http://localhost:8080/项目名/WEB-INF/classes" target="_blank" rel="noopener">http://localhost:8080/项目名/WEB-INF/classes</a></p>
+<p>Class获取资源路径</p>
+<p>以”/“开头相对classes目录</p>
+<p>不以”/“开头相对当前.class文件所在目录</p>
+<h2 id="Listener"><a href="#Listener" class="headerlink" title="Listener"></a>Listener</h2><p>javaWeb中的监听器</p>
+<p>—事件源 : 三大域</p>
+<p>ServletContext</p>
+<p>服务器开在创建对象  只有一个  ,服务器关 对象销毁</p>
+<p>HttpSession</p>
+<p>访问servlet调用getSession则创建sessio对象</p>
+<p>访问jsp页面自动创建</p>
+<p>servletRequest</p>
+<p>两个监听器</p>
+<p>生死监听</p>
+<p>属性监听</p>
+<h2 id="JSP"><a href="#JSP" class="headerlink" title="JSP"></a>JSP</h2><h3 id="jsp三大指令"><a href="#jsp三大指令" class="headerlink" title="jsp三大指令"></a>jsp三大指令</h3><p>指令不是必须放在第一行</p>
+<p>1.page</p>
+<p>pageEncoding:</p>
+<p>指定当前页面编码</p>
+<p>contentType  :</p>
+<p>第一个值指定MIME类型</p>
+<p>​    charset=ISO-8859-1这个指定响应编码</p>
+<p>两个属性有依赖关系  设置期中一个值,另一个默认跟随</p>
+<p>errorPage:  </p>
+<p>当前页面如果抛出异常,指定转发到哪个页面</p>
+<p>isErrorPage:  </p>
+<p>指定当前页面是否为处理错误页面</p>
+<p>该属性为true时   发送状态码500  可以使用Exception对象</p>
+<p>autoFlush :</p>
+<p> 指定jsp输出流缓冲区满时  是否自动刷新</p>
+<p>buffer  :</p>
+<p> 指定缓冲区大小 默认8kb</p>
+<p>language  : </p>
+<p> 指定jsp编译后的语言类型,默认为java</p>
+<p>info : 信息</p>
+<p>&lt;%@page   %&gt;</p>
+<p>2.include  静态包含</p>
+<p>&lt;%@include file=”url”%&gt;</p>
+<p>​    多个jsp在编译时合并成一个.class文件</p>
+<p>3.taglib    </p>
+<p>导入标签库</p>
+<p>​    两个属性</p>
+<p>​    prefix: 指定标签库在本页中的前缀,由我们自己定义</p>
+<p>​    url:  指定标签库的位置</p>
+<h3 id="jsp作用"><a href="#jsp作用" class="headerlink" title="jsp作用"></a>jsp作用</h3><h3 id="九大内置对象"><a href="#九大内置对象" class="headerlink" title="九大内置对象"></a>九大内置对象</h3><h4 id="pageContext"><a href="#pageContext" class="headerlink" title="pageContext :"></a>pageContext :</h4><p><strong>!!!一个顶九个</strong></p>
+<p>作用:</p>
+<p>1.当前jsp页面使用的标签之间共享数据</p>
+<p>2.可以代理其他三个域</p>
+<p>setAttribute(“属性名”,”属性值”,指定域)</p>
+<p>3.可以获取其他其他八个内置对象</p>
+<p>get对象名</p>
+<p>例如getSession()</p>
+<p>4.全域查找</p>
+<p>findAttribute(“属性名”) ;从小到大 一次查找</p>
+<h4 id="out"><a href="#out" class="headerlink" title="out :"></a>out :</h4><p>jsp输出 ,向客户端响应</p>
+<h4 id="page"><a href="#page" class="headerlink" title="page :"></a>page :</h4><p>Object  page = this</p>
+<h4 id="session"><a href="#session" class="headerlink" title="session :"></a>session :</h4><p>作用范围整个会话</p>
+<p>HttpSession是由javaWeb提供的,用来会话跟踪的类</p>
+<p>session是服务器端对象,保存在服务器端</p>
+<p>会话不结束则对象一直存在</p>
+<p>Servlet中得到Session对象</p>
+<p>request.getSession()</p>
+<p>如果不存在会创建</p>
+<p>request.getSession(true)和上面效果一样</p>
+<p>request.getSession()如果不存在session返回null不会创建</p>
+<p>jsp中可以直接使用  (九个内置对象之一)</p>
+<p>底层依赖Cookie和URL重写实现</p>
+<p>session最大不活动时间</p>
+<p>默认30分钟  30分钟不访问  服务器自动删了</p>
+<p>服务器端可以自主设置</p>
+<p>web.xml中配置session的最大不活动时间</p>
+<p>&lt;session-config&gt;</p>
+<p>​    &lt;session-timeout&gt;int&lt;session-timeout&gt;</p>
+<p>​    单位是分钟</p>
+<p>&lt;/session-config&gt;</p>
+<p>常用方法</p>
+<p>String        getId() 获取sessionId</p>
+<p>void invalidate()  让session失效</p>
+<p>boolean isNew()  查看session是为新</p>
+<h4 id="request"><a href="#request" class="headerlink" title="request :"></a>request :</h4><h4 id="response"><a href="#response" class="headerlink" title="response :"></a>response :</h4><h4 id="exception"><a href="#exception" class="headerlink" title="exception :"></a>exception :</h4><p>Throwable</p>
+<h4 id="config"><a href="#config" class="headerlink" title="config :"></a>config :</h4><p>ServletConfig</p>
+<h4 id="application"><a href="#application" class="headerlink" title="application  :"></a>application  :</h4><p>ServletContext</p>
+<h3 id="三种jsp脚本"><a href="#三种jsp脚本" class="headerlink" title="三种jsp脚本"></a>三种jsp脚本</h3><p>&lt;%   …….  %&gt;</p>
+<p>java片段(常用) 用于定义0-N条Java语句,方法能写什么,它就能写什么</p>
+<p>&lt;%=…..%&gt;</p>
+<p>java表达式,用于输出(常用), 用于输出一条表达式(或变量的结果)</p>
+<p>&lt;%! …..%&gt;</p>
+<p>声明,用来创建类的成员变量和 成员方法(基本不用,但容易被可考到)</p>
+<h3 id="jsp动作标签"><a href="#jsp动作标签" class="headerlink" title="jsp动作标签"></a>jsp动作标签</h3><p>&lt;jsp:forward&gt;:转发</p>
+<p>&lt;jsp:include&gt;:包含</p>
+<p>&lt;jsp:param&gt; :用来给转发或包含的页面参数</p>
+<p>&lt;jsp:useBean&gt;:创建或查询Bean</p>
+<p>&lt;jsp:setProperty&gt;</p>
+<p>&lt;jsp:getProperty&gt;</p>
+<h3 id="EL表达式"><a href="#EL表达式" class="headerlink" title="EL表达式"></a>EL表达式</h3><p>1.EL是JSP内置的表达式语言!</p>
+<p>​    –jsp2.0开始,不然再使用java脚本,而是使用EL表达式和动态标签来替代java脚本!</p>
+<p>​    EL替代的是&lt;%=  …  %&gt;  也就是说EL只能做输出</p>
+<p>2.EL表达式来读取四大域</p>
+<p>全域查找</p>
+<p>${属性名}</p>
+<p>指定域查找</p>
+<p>${域Scope.属性名}</p>
+<h4 id="EL十一个内置对象"><a href="#EL十一个内置对象" class="headerlink" title="EL十一个内置对象"></a>EL十一个内置对象</h4><p>除了pageContext其他十个都是Map类型</p>
+<p>pageScope:</p>
+<p>requestScope:</p>
+<p>sessionScope:</p>
+<p>applicationScope:</p>
+<p>param:对应参数</p>
+<p>${param.username}</p>
+<p>paramvaleu:值为一个数组  适用于参数多值</p>
+<p>${paramvalue.hobby[0]}</p>
+<p>header:对应请求头</p>
+<p>headerValue:多值请求头</p>
+<p>initparam: 初始化参数</p>
+<p>cookie:</p>
+<p>Map&lt;String,Cookie&gt;  </p>
+<p>${cookie.cookiename.value}</p>
+<p>pageContext:</p>
+<p>用来获取JSP其他八个对象</p>
+<p>以便在EL表达式内使用JSP其他八个对象的方法</p>
+<h4 id="EL函数库"><a href="#EL函数库" class="headerlink" title="EL函数库"></a>EL函数库</h4><p>(由jstl提供)</p>
+<p>​    导入标签库</p>
+<p>​    &lt;%@t aglib    prefix:  “  “uri:” “   %&gt;</p>
+<p>自定义函数库</p>
+<p>​    写一个java类  里面写方法  方法为静态  必须有返回值</p>
+<p>​    在WEB-INF下创建一个配置文件后缀名为tld</p>
+<h4 id="JSTL"><a href="#JSTL" class="headerlink" title="JSTL"></a>JSTL</h4><p>apache提供的依赖 EL</p>
+<p>使用jstl需要导入jstl1.2.jar</p>
+<p>四大库</p>
+<p>&lt;@taglib prefix=”前缀”  uri=”路径”&gt;</p>
+<p>核心标签—&gt;也叫C标签(一般使用c作为前缀)</p>
+<h5 id="core"><a href="#core" class="headerlink" title="core"></a>core</h5><p>out</p>
+<pre><code>value:可以使EL表达式 也可以是字符串常量</code></pre><p>​    default : 输出内容为空时,输出default的内容</p>
+<p>​    escapeXml: 默认值为true ,表示转义</p>
+<p>set</p>
+<p>​    var :变量名</p>
+<p>​    value: 变量值</p>
+<p>​    scope: 域</p>
+<p>remove</p>
+<p>​    var :变量名</p>
+<p>​    scope: 不指定域  删除所有域的同名变量</p>
+<p>url</p>
+<p>value :指定路径,,会在路径前面自动添加项目名</p>
+<p>子标签&lt;c:param&gt;  用来给url后面添加参数</p>
+<p>var: 指定变量名 ,保存url</p>
+<p>scope: 指定域 保存url</p>
+<p>  if</p>
+<p>&lt;c:if test=”boolean”&gt;</p>
+<p>&lt;/c:if&gt;</p>
+<p>choose</p>
+<p>forEach</p>
+<p>&lt;c:foreach items=”${}” var=”str”&gt;</p>
+<p>​    ${}&lt;br/&gt;</p>
+<p>&lt;/c:foreach&gt;</p>
+<p>循环状态变量varStatus</p>
+<p>注意 items引号不能有空格</p>
+<h5 id="fmt"><a href="#fmt" class="headerlink" title="fmt"></a>fmt</h5><p>格式化库</p>
+<p>例如 格式化日期</p>
+<p>&lt;fmt:formatData value=”” pattern=”yyyy-mm-dd HH:MM:SS”</p>
+<h5 id="自定义标签"><a href="#自定义标签" class="headerlink" title="自定义标签"></a>自定义标签</h5><p>1.步骤</p>
+<p>​    –标签处理类</p>
+<p>​    –tld文件,一个XML</p>
+<p>​    –页面中使用&lt;%@taglib%&gt;来指定tld文件的位置</p>
+<p>2.标签处理类</p>
+<p>Simpletag接口</p>
+<p>​    void doTag()  每次执行标签时都会调用这个方法</p>
+<p>3.tld文件配置</p>
+<p>&lt;tag&gt;</p>
+<p>​    &lt;name&gt;&lt;/name&gt;指定当前标签的名称</p>
+<p>​    &lt;tag-class&gt;&lt;/tag-class&gt;指定当前标签的处理类</p>
+<p>​    &lt;body-content&gt;&lt;/body-content&gt;指定标签体的类型</p>
+<p>这三个必须有</p>
+<p>&lt;tag&gt;</p>
+<p>标签体内容</p>
+<p>empty:无标签体</p>
+<p>JSP:  不再支持</p>
+<p>scriptless:只能是EL表达式 ,也可以是其他的标签</p>
+<h3 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie"></a>Cookie</h3><p>Set-Cookie</p>
+<p>cookie的生命</p>
+<h3 id="cookie路径"><a href="#cookie路径" class="headerlink" title="cookie路径"></a>cookie路径</h3><h4 id="URL重写"><a href="#URL重写" class="headerlink" title="URL重写"></a>URL重写</h4><p>response.encodeURL(String url)</p>
+<p>该方法会对url进行智能的重写,当请求中没有sessionid时那么该方法会重写url否则不重写</p>
+<p>重写是指给url带上一个sessionid的参数和值</p>
+<p>例如:</p>
+<p>&lt;a href=”/javaweb/Servlet;JSESSIONID=&lt;%=session.getId()%&gt;”&gt; &lt;/a&gt;</p>
+<h2 id="javaBean"><a href="#javaBean" class="headerlink" title="javaBean"></a>javaBean</h2><p>规范</p>
+<p>1.必须要有一个默认构造器(无参数)</p>
+<p>2.提供 get/set 方法,如果只有get方法,那么这个属性为只读属性</p>
+<p> 使用</p>
+<p>BeanInfo beanInfo = </p>
+<h2 id="java绘图"><a href="#java绘图" class="headerlink" title="java绘图"></a>java绘图</h2><p>1.创建图片缓冲区</p>
+<p>2.设置其宽高</p>
+<p>3.得到绘画环境</p>
+<p>4.保存</p>
+<p>BufferedImage bi = new BufferedImage();</p>
+<p>g.setColor(Color.WHITE);</p>
+<p>g.fillRect(0, 0, 70, 35);</p>
+<p>g.setColor(Color.RED);</p>
+<p>g.drawString(“hellow”, 5, 15);</p>
+<p>ImageIO.write(bi, “JPEG”, new FileOutputStream(“D:/my.jpg”));</p>
+<h4 id="验证码"><a href="#验证码" class="headerlink" title="验证码"></a>验证码</h4><h2 id="MVC设计模式"><a href="#MVC设计模式" class="headerlink" title="MVC设计模式"></a>MVC设计模式</h2><p>不是java独有 所有的B/S结构的项目都用它</p>
+<p>M—-model  模型(自己写代码)</p>
+<p>V—-view  视图(jsp)</p>
+<p>C—-Cotroller  控制器 (Servlet)</p>
+<p>javaWeb三层框架</p>
+<p>Web层—-与Web层相关的内容(Servlet)</p>
+<p>业务层—-业务对象(service)</p>
+<p>数据层—-操作数据库</p>
+<h2 id="html"><a href="#html" class="headerlink" title="html"></a>html</h2><h3 id="标签"><a href="#标签" class="headerlink" title="标签"></a>标签</h3><h4 id="列表标签"><a href="#列表标签" class="headerlink" title="列表标签"></a>列表标签</h4><p>&lt;dl&gt;</p>
+<p>​    &lt;dt&gt;&lt;/dt&gt;</p>
+<p>​    &lt;dt&gt;&lt;/dt&gt;</p>
+<p>​    &lt;dt&gt;&lt;/dt&gt;</p>
+<p>&lt;/dl&gt;</p>
+<p>&lt;ol&gt;&lt;/ol&gt;:有序标签  默认排序方式 1 (默认)    a   i</p>
+<p>type属性设置排序方式</p>
+<p>&lt;ol type=”a”&gt;</p>
+<p>​    &lt;li&gt;&lt;/li&gt;</p>
+<p>​    &lt;li&gt;\</p>
+<p>​    &lt;li&gt;&lt;/li&gt;</p>
+<p>&lt;/ol&gt;</p>
+<p>&lt;ul&gt;&lt;/ul&gt;</p>
+<p>属性:type:circle(空心圆)  sidc(实心圆)  square实心方块 默认dis</p>
+<h4 id="图像标签"><a href="#图像标签" class="headerlink" title="图像标签"></a>图像标签</h4><p>&lt;img src=”图片路径”/&gt;</p>
+<p>-alt :图片上显示的文字(把鼠标停留在图片上会显示的信息)</p>
+<h4 id="超链接标签"><a href="#超链接标签" class="headerlink" title="超链接标签"></a>超链接标签</h4><h5 id="1-链接资源"><a href="#1-链接资源" class="headerlink" title="1.链接资源"></a>1.链接资源</h5><p> &lt;a href = “链接到的资源路径”&gt;页面显示的文字&lt;/a&gt;</p>
+<p>-target:设置打开方式,默认当前页打开   </p>
+<p>当超链接不需要到任何的地址,在href里面加#</p>
+<h5 id="2-定位资源"><a href="#2-定位资源" class="headerlink" title="2.定位资源"></a>2.定位资源</h5><pre><code>如果想要定位资源:定义一个位置</code></pre><p>   &lt;a name=”top”&gt;顶部&lt;/a&gt;</p>
+<p>​    回到这个位置</p>
+<p>&lt;a href=”#top”&gt;回到顶部&lt;/a&gt;  </p>
+<p>​    y引入一个标签 pre :原样输出</p>
+<h4 id="表格标签"><a href="#表格标签" class="headerlink" title="表格标签"></a>表格标签</h4><p>&lt;table&gt;(表格)</p>
+<p>​    &lt;tr&gt;(行)</p>
+<p>​    &lt;td&gt;&lt;/td&gt;(列)</p>
+<p>​    &lt;/tr&gt;</p>
+<p>&lt;/table&gt;</p>
+<p><strong>属性</strong></p>
+<p>cellspacing : </p>
+<p>设置表格单元格之间的距离</p>
+<p> aling:</p>
+<p>设置表格内容  显示方式  left  center  right</p>
+<p><strong>使用技巧</strong></p>
+<p>th(标签:加粗居中):</p>
+<p>caption(标签:表格标题)</p>
+<p>合并单元格</p>
+<p>-rowspan :跨行</p>
+<p>-colspan :跨列</p>
+<h4 id="表单标签"><a href="#表单标签" class="headerlink" title="表单标签"></a>表单标签</h4><p><strong>属性</strong></p>
+<p>&lt;form&gt;</p>
+<p>​    –action :        </p>
+<p>​    提交到地址,默认提交到当前页面</p>
+<p>​    –method:    </p>
+<p>​    表单提交方式</p>
+<p>​    get</p>
+<p>方式在地址栏显示提交的信息</p>
+<p>get请求安全级别较低</p>
+<p>get请求有数据大小的限制</p>
+<p>​    post</p>
+<p>方式不显示提交的信息</p>
+<p>post请求安全级别较高</p>
+<p>post请求没有数据大小的限制</p>
+<p>​    &lt;input   type=”” name =””/&gt;</p>
+<p>input type:</p>
+<p>​    reset(重置)</p>
+<p>​     radio(单选)   </p>
+<p>​    checkbox(复选) </p>
+<p>​    单选和复选要加入这个属性指定默认值checked=”checked”</p>
+<p>​    file(文件输入项) </p>
+<p>​    hiden(隐藏项)  </p>
+<p>​    submit(提交项)</p>
+<p>​    image(图片提交)</p>
+<p>​    必须要有name属性</p>
+<p>​    属性值必须要一样</p>
+<p>​    &lt;select&gt;(下拉输入项)</p>
+<p>​        selected=”selected”(下拉项的默认设置 )</p>
+<p>​        &lt;option value=””&gt;&lt;/option&gt;</p>
+<p>​    &lt;/select&gt;</p>
+<p>​    &lt;textarea&gt;(文本域)</p>
+<p>​    –cols:列</p>
+<p>​    –rows: 行</p>
+<p>​    &lt;textarea&gt;</p>
+<p>​    &lt;</p>
+<p>&lt;/form&gt;</p>
+<h4 id="其他常用标签"><a href="#其他常用标签" class="headerlink" title="其他常用标签"></a>其他常用标签</h4><p>b:加粗</p>
+<p>s:删除线</p>
+<p>u:下划线</p>
+<p>i:斜体</p>
+<p>pre:原样输出</p>
+<p>hr:水平线</p>
+<p>br:换行</p>
+<p>sub:下标</p>
+<p>sup:上标</p>
+<p>div:自动换行</p>
+<p>span:一行显示</p>
+<p>p:段落</p>
+<h4 id="头标签"><a href="#头标签" class="headerlink" title="头标签"></a>头标签</h4><p>&lt;head&gt;&lt;/head&gt;</p>
+<p>title</p>
+<p>标题</p>
+<p>meta</p>
+<p>页面的基本设置</p>
+<p>base</p>
+<p>设置超链接的基本设置</p>
+<p>link</p>
+<p>引入外部文件</p>
+<h4 id="框架标签"><a href="#框架标签" class="headerlink" title="框架标签"></a>框架标签</h4><p>不能写在body里面,使用了框架标签需要把body去掉</p>
+<p>&lt;frameset&gt;</p>
+<p>&lt;frame name=”” src=””&gt;</p>
+<p>&lt;\frame&gt;</p>
+<p>&lt;/frameset&gt;</p>
+<p>​    -rows :按照行划分</p>
+<p>​    _cols:按照列划分</p>
+<h2 id="CSS"><a href="#CSS" class="headerlink" title="CSS"></a>CSS</h2><p>每个HTML标签都有一个style属性</p>
+<p>四种与HTML结合方式</p>
+<p><strong>注意:第三种方式在某些浏览器下不起作用</strong>  通常使用第四种方式</p>
+<h3 id="css的优先级"><a href="#css的优先级" class="headerlink" title="css的优先级"></a>css的优先级</h3><p>由上到下,由外到内,优先级由低到高</p>
+<p>HTML由上到下加载  后加载的优先级更高</p>
+<h3 id="选择器"><a href="#选择器" class="headerlink" title="选择器"></a>选择器</h3><p>格式 </p>
+<p>选择器名称 {属性名:属性值 属性名 :属性值……}</p>
+<p>三种基本选择器</p>
+<p>1 标签选择器</p>
+<p>​    以标签为选择器名称</p>
+<p>2 class选择器</p>
+<p>​        每个html都有一个class属性</p>
+<p>​    标签名.classs属性值{}</p>
+<p>​    或者不要标签名   .class属性值{}</p>
+<p>3 id选择器</p>
+<p>​    每个HTML标签都有一个id属性</p>
+<p>​    #id{}</p>
+<p>三个基本选择器的优先级</p>
+<p>标签内设置样式&gt;id选择器&gt;class选择器&gt;标签选择器</p>
+<p>扩展选择器</p>
+<p>1   关联选择器</p>
+<p>​    主要用来设置嵌套标签的样式</p>
+<p>外标签[空格]内标签{ }</p>
+<p>2  组合选择器</p>
+<p>​    把不同标签设置成相同样式</p>
+<p>​    标签1[,]标签2{ }</p>
+<p>3 伪元素选择器</p>
+<p>css里面提供了一些设置好的样式,可以直接拿来用</p>
+<p>​    比如超链接</p>
+<p>​    —链接的状态</p>
+<p>​        原始状态  鼠标悬停状态 点击状态 点击后状态</p>
+<p>​        :link          :hover          :active      :visited</p>
+<h3 id="盒子模型-网页布局"><a href="#盒子模型-网页布局" class="headerlink" title="盒子模型(网页布局)"></a>盒子模型(网页布局)</h3><p>边框</p>
+<p>​    border:</p>
+<p>–width</p>
+<p>–style</p>
+<p>–color</p>
+<p>​    可以统一设置</p>
+<p>​    也可以分开设置</p>
+<p>border-top ;border-bottom ;border-left ;  border-ringht</p>
+<p>内边距</p>
+<p>padding (同边框一样可以统一设置也可以分开设置)</p>
+<p>–length</p>
+<p>外边距</p>
+<p> margin(同边框一样可以统一设置也可以分开设置)</p>
+<p>–auto : 默认  不设置</p>
+<p>–lenth</p>
+<h3 id="布局的漂浮"><a href="#布局的漂浮" class="headerlink" title="布局的漂浮"></a>布局的漂浮</h3><p>​    <strong>float</strong></p>
+<p>​    –none  :默认值  不设置漂浮</p>
+<p>​    –left:当前节点居左,它后面的节点飘到它的右边</p>
+<p>​    –right:和left相反</p>
+<h3 id="布局的定位"><a href="#布局的定位" class="headerlink" title="布局的定位"></a>布局的定位</h3><p>​    <strong>psition</strong></p>
+<p>​    –static : 默认值</p>
+<p>​    –absolute : 将对象从文档中流出,进行绝对定位</p>
+<p>​    –relative : 不从文档流中拖出</p>
+<h2 id="javaScript"><a href="#javaScript" class="headerlink" title="javaScript"></a>javaScript</h2><h3 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h3><p>`–是基于对象和事件驱动的语言,应用于客户端</p>
+<p>​    –html是静态网页   javascript实现动态效果</p>
+<p>1 交互性</p>
+<p>​    –信息的动态交互</p>
+<p>2安全性</p>
+<p>​    –js不能访问本地磁盘文件</p>
+<p>3 跨平台性</p>
+<p>​    –能够支持js的浏览器(目前所以的浏览器都支持),都可以运行</p>
+<p>java和javaScript的区别(没有关联,两者没有关系)</p>
+<p>java是SUN公司的(现在是oracle)  javascript  javascript是网景公司</p>
+<p>2  javascript是基于对象的,java是面向对象的</p>
+<p>3 java是强类型语言  js是弱类型语言</p>
+<p>4  js只需要解析就可以执行 而java需要进行编译</p>
+<p>js的组成</p>
+<p>–1–ECMAScript</p>
+<p>​    –ECMA  :欧洲计算机协会</p>
+<p>​    –由ECMA组织制定的js的语法,语句….</p>
+<p>–2–BOM</p>
+<p>​    –broswer  object  model : 浏览器对象模型</p>
+<p>–3–DOM</p>
+<p>​    –document  objiect  model : 文档模型</p>
+<p>js和html的结合方式(两种)</p>
+<p>​    第一种 : 文档内</p>
+<p>&lt;script&gt;js代码&lt;/script&gt;</p>
+<p>​    第二种 : 引入外部文件</p>
+<p>创建一个js文件,写入js代码</p>
+<p>​    –&lt;script  src=”js文件路径”&gt;&lt;/script&gt;</p>
+<p>​    注意:使用第二种方式在script标签内写js代码无效</p>
+<p>js的原始类型和基本声明变量</p>
+<p>​    –java的基本数据类型   </p>
+<p>byte short int long float double  char boolean</p>
+<p>​    –js的原始类型(五个)</p>
+<p>​        –string: 字符串</p>
+<p>​                —var string = ‘abc’</p>
+<p>​        –number:数字类型</p>
+<p>​            —var  number = 123;</p>
+<p>​        –boolean:  true和false</p>
+<p>​                var  flag = true ;</p>
+<p>​        –null:</p>
+<p>​                var date = new Date();</p>
+<p>​                获取当前对象的引用</p>
+<p>​                nullb表示对象的引用为空</p>
+<p>​                object也是所有对象的引用</p>
+<p>​                typeof (null)返回object</p>
+<p>​        –undifined:</p>
+<p>​                定义一个变量,没有赋值</p>
+<p>​                var  aa</p>
+<p>​    – typeof  </p>
+<p>​    查看变量类型</p>
+<p>​        typeof(变量类型)  </p>
+<h3 id="js的语句-语法-运算符"><a href="#js的语句-语法-运算符" class="headerlink" title="js的语句,语法,运算符"></a>js的语句,语法,运算符</h3><p>js的语句</p>
+<p>​    –java里面的语句</p>
+<p>​        –if判断</p>
+<p>​        –switch判断</p>
+<p>​        –循环 for  while  do-whle</p>
+<p>​    –js里面的这些语句</p>
+<p>​        —-if判断</p>
+<p>​        —-switch判断</p>
+<p>​                –java里面支持的数据类型  string  jdk1.7k开始支持</p>
+<p>​                –js;里面支持</p>
+<p>​        –循环 for  while  do-whle</p>
+<p>js的运算符</p>
+<p>​        js里面不区分整数和小数</p>
+<p>​        字符串操作</p>
+<p>​        var  x= “abc”</p>
+<p>​        x+1  和java一样字符串连接</p>
+<p>​        x-1  如果x里面的字符串是数字则进行相减运算</p>
+<p>​            如果不是数字则返回一个错误提示符</p>
+<p>​        var  x = boolean</p>
+<p>​            和数字运算时  true值为1      false值为0</p>
+<p>​    —  ==和===的区别</p>
+<p>​    ==比较值</p>
+<p>​    ===比较值和类型</p>
+<h3 id="js的数组和函数"><a href="#js的数组和函数" class="headerlink" title="js的数组和函数"></a>js的数组和函数</h3><p>js的数组</p>
+<p>​    定义方式(三种)</p>
+<p>​        第一种  :  var  arr = {1,2,”3”,true}</p>
+<p>​        第二种 : 使用内置对象 Array对象</p>
+<p>​        var arr1 = new Array(5)</p>
+<p>​        也是从西下表0开始</p>
+<p>​        第三种 : 使用内置对象</p>
+<p>​        var  arr2 = new Array{3,4,5}</p>
+<p>​        数组有一个属性length(长度)</p>
+<p>​        数组的长度是可变的</p>
+<p>​    数组里面可以存放不同的数据类型</p>
+<p>js的函数</p>
+<p>参数不需要使用var定义  直接写名称</p>
+<p>三种定义方式</p>
+<p>第一种  :   function  方法名(参数列表){      方法体;  返回值可有可无}</p>
+<p>​    调用方法 :  方法名(参数列表)</p>
+<p>第二种 :  匿名函数</p>
+<p>​    var 方法名 = function(参数列表){}</p>
+<p>第三种 :     (用的少,了解)</p>
+<p>​    var add = new Function(‘参数列表”,”方法体和返回值”)</p>
+<p>js的全局变量和局部变量</p>
+<p>​    –全局变量 : 在script标签内定义一个变量  这个变量在页面的所有js都能读取到(另一个标签)</p>
+<p>​    – 局部变量 : 在方法内部定义只能在方法内部使用</p>
+<p>js的函数重载</p>
+<p>​    重载:方法名相同  参数列表不同</p>
+<p>js里面不存在重载</p>
+<p>​    就近原则  调用函数</p>
+<p>js的全局函数</p>
+<p>不属于任何一个对象,直接写名称来使用</p>
+<p>​        eval()</p>
+<h3 id="script标签位置放置"><a href="#script标签位置放置" class="headerlink" title="script标签位置放置"></a>script标签位置放置</h3><p>​        –一般放在body后面  因为浏览器是从上到下解析的</p>
+<p>​            如果js需要操作js代码后面的元素就会报错 </p>
+<p>​            因为浏览器还没解析到后面的代码</p>
+<h3 id="js的对象"><a href="#js的对象" class="headerlink" title="js的对象"></a>js的对象</h3><p>js的string对象</p>
+<p>​    属性 –length(长度)</p>
+<p>​    –方法</p>
+<p>​        –(1)与html相关的</p>
+<p>​            –bold()   :加粗</p>
+<p>​            –fontcolor()   :字体颜色设置</p>
+<p>​            –fontsizi()    :字体大小设置</p>
+<p>​            –link(  url  )  : 将字符串变成超链接  </p>
+<p>​            –sub()  :下标   sup()  :下标</p>
+<p>​        –(2)与java相似的方法</p>
+<p>​            –concet()  :字符串连接</p>
+<p>​            –charAt()  :   取得指定未知的单个字符//字符位置不存在则返回空字符串</p>
+<p>​            –indexOf(char)  :  返回某个字符在字符串的索引</p>
+<p>​    如果字符不存在则返回-1</p>
+<p>​            –split()  :  按指定某个自字符对字符串进行切割</p>
+<p>​    返回一个数组   切割字符不在数组中</p>
+<p>​            –repalce(a,b)  替换字符串</p>
+<p>​                –a  :要替换的字符</p>
+<p>​                –b  :要替换成的字符  </p>
+<p>​            –substr(a,b)   :</p>
+<p>​                        从第a位开始向后截取b位字符</p>
+<p>​            –substring(a,b)  :</p>
+<p>​                        从第a位开始到第b位开始但不包括第b位</p>
+<p>js 的Array对象</p>
+<p>​            arr1.cancat(arr2)  :连接字符串</p>
+<p>js的Date对象</p>
+<p>​        –获取当前时间  :   var date  = new Date()  </p>
+<p>​        – 转换成本地格式  :  date.toLocalString() </p>
+<p>​        – 得到当前周的星期getDay()</p>
+<p>js的math对象</p>
+<p>​        —数学运算</p>
+<p>js的BOM对象</p>
+<p>bom :broswer oject model  :浏览器对象模型</p>
+<p>​        –navigator  :  获取浏览器的信息</p>
+<p>​        –scren  :获取屏幕信息</p>
+<p>​        –location  :请求的url地址</p>
+<p>​                –href属性</p>
+<p>​                    –获取到当前请求的url地址</p>
+<p>​                    –设置url地址</p>
+<p>​                        –页面上放置一个按钮,按钮绑定一个事件,可以跳转页面                    </p>
+<p>​        –history  :请求的URL的历史记录</p>
+<p>​                –实现浏览器上面的前进后退效果</p>
+<p>也可以去history中某个具体的页面</p>
+<p>​    go(n)  :</p>
+<p>​        正数表示到当前页面后面的第N个页面</p>
+<p>​        负数表示到当前页面前面的第N个页面</p>
+<p>​        <strong>–window  :</strong></p>
+<p><strong>窗口对象</strong></p>
+<p><strong>顶层对象</strong></p>
+<p>方法  :</p>
+<p>​        –alert()  :</p>
+<p>​        –confirm()  : (确认框)</p>
+<p>​            返回true或false</p>
+<p>​        –prompt()  :  输入的对话框</p>
+<p>​        –open()  : 打开一个新的窗口</p>
+<p>​        –close()  :  关闭窗口(浏览器兼容性较差)</p>
+<p>​        – setInterval(“js代码”,毫秒数)</p>
+<p>​            多少毫秒一个周期指定js代码</p>
+<p>​        –clearInterval()  :  清除setInterval定时器</p>
+<p>​        –setTimeout(“js代码”,毫秒数)  </p>
+<p>​            多少毫秒后执行js代码   只执行一次</p>
+<p>​        –clearTimeeout()  :清除setTimeout定时器</p>
+<p>js的dom对象</p>
+<p>​        –dom :  document object model  : 文档对象模型</p>
+<p>​        –文档</p>
+<p>​            超文本文档(超文本标记文档)  html ,xml</p>
+<p>​        –对象  :</p>
+<p>​            提供了属性和方法</p>
+<p>​        –模型  :  使用属性和方法操作超文本标记文档</p>
+<p>可以使用dom对象提供的属性和方法对标记的超文本文档进行操作</p>
+<p>想要对标记的标记型文档进行操作,需要先对文档进行解析</p>
+<p>document对象</p>
+<p>​        –是整个html文档</p>
+<p>​        常用方法</p>
+<p>​        –write()</p>
+<p>​        –getElementsById()</p>
+<p>​            : 通过Id来获得元素(标签)</p>
+<p>​        –getElementName()</p>
+<p>​            –通过name属性值获得元素(标签)</p>
+<p>​            注意:  因为name属性值可以相同</p>
+<p>​        所以这个方法返回的是一个name属性值符合</p>
+<p>​            得对象集合</p>
+<p>​        —-getElementsTageName()</p>
+<p>​            根据标签名获得元素(标签)</p>
+<p>​            返回一个标签数组</p>
+<h3 id="js使用"><a href="#js使用" class="headerlink" title="js使用"></a>js使用</h3><p>window的弹窗实现</p>
+<p>​        实现</p>
+<p>​            –使用open方法打开一个新窗口</p>
+<p>​        –opener  :  得到创建这个窗口的窗口引用</p>
+<p>创建结点</p>
+<p>createElement()  :  创建标签</p>
+<p>createTextNode()  :  创建文本结点</p>
+<p>appendChild()  :  添加到调用结点的下面</p>
+<p>element</p>
+<p>方法</p>
+<p>​        getAttribute()    : 获取元素属性</p>
+<p>​        setAtteibute()  :  设置元素属性</p>
+<p>​        removeAttribute()  :  删除元素属性</p>
+<p>​            注意:  不能删除value的值</p>
+<p>属性</p>
+<p>​        childNode  :  返回子标签的集合</p>
+<p>​            浏览器兼容性差</p>
+<p>​        解决办法getElementsTageName()</p>
+<p>Node对象</p>
+<p>​        属性一</p>
+<p>​        –nodeName  : </p>
+<p>​            标签  : 返回大写的标签名</p>
+<p>​            属性  :  返回属性名</p>
+<p>​            文本  : #text</p>
+<p>​        –nodeType</p>
+<p>​            标签  : 1</p>
+<p>​            属性  :  2</p>
+<p>​            文本  :  3</p>
+<p>​        –nodeValue</p>
+<p>​            标签  : null</p>
+<p>​            属性  : 属性值</p>
+<p>​            文本  :  文本内容</p>
+<p>​    属性二</p>
+<p>​        父节点 :</p>
+<p>​        parentNode</p>
+<p>​        子节点 :</p>
+<p>​        childNode :所有子节点</p>
+<p>​        firstChild  :第一个子节点</p>
+<p>​        lastChild : 最后一个子节点</p>
+<p>​        同辈结点 :</p>
+<p>​            nextSibling  : 下一个同辈结点</p>
+<p>​            previousSibling  :上一个同辈结点</p>
+<p>操作dom树</p>
+<p>appendChild(Node)</p>
+<p>​        剪切粘贴效果</p>
+<p>insertBefore(newNode,oldNode)</p>
+<p>​        在某个结点之前插入一个新的结点</p>
+<p>removeChild(Node)</p>
+<p>​        通过父节点调用这个方法来删除子结点</p>
+<p>​        </p>
+<p>replaceChild(newNode,oldNode)    </p>
+<p>​    父节点调用</p>
+<p>cloneNode(boolean)</p>
+<p>​        复制结点</p>
+<p>innerHTML属性</p>
+<p>这个属性不是dom组成部分,基本所有浏览器都支持</p>
+<p>​        获取内容</p>
+<p>​        设置内容 : 会替换原内容 可以解析html代码</p>
+<h2 id="XML"><a href="#XML" class="headerlink" title="XML"></a>XML</h2><p>语法</p>
+<p>​    1 xml的文档声明</p>
+<p>​        创建一个文件 ,后缀名是 .xml</p>
+<p>​        <?xml version="1.0" encoding="gbk"?></p>
+<p>​        必须写在第一行第一列</p>
+<p>​        属性</p>
+<p>​        standalone:  true  false  表示是否依赖其他文件</p>
+<p>​    一个XML文件中有且只有一个标签  其他标签都是他下        面的标签</p>
+<p>​    xml文件中 空格和换行都被作为原始内容来处理  所以不要随意添加空格和换行</p>
+<h3 id="xml中标签名称命名规范"><a href="#xml中标签名称命名规范" class="headerlink" title="xml中标签名称命名规范"></a>xml中标签名称命名规范</h3><p>​    –区分大小写</p>
+<p>​    –不能以数字和下划线开头</p>
+<p>​    –不能以xml.XML,Xml等开头</p>
+<p>​    –不能包含空格和冒号</p>
+<h3 id="xml属性的定义"><a href="#xml属性的定义" class="headerlink" title="xml属性的定义"></a>xml属性的定义</h3><p>​    **一个标签上可以有多个属性,属性名称不能相同</p>
+<p>​    **属性名称和属性值之间使用”=”连接,属性值可以用单引号也可以用双引号</p>
+<p>​    **属性名称规范和标签名称规范一样</p>
+<h3 id="xml中的注释"><a href="#xml中的注释" class="headerlink" title="xml中的注释"></a>xml中的注释</h3><p>​        &lt;!–xml的注释–&gt;</p>
+<p>​    注释不能嵌套,不能放在第一行第一列</p>
+<h3 id="xml中的特殊字符"><a href="#xml中的特殊字符" class="headerlink" title="xml中的特殊字符"></a>xml中的特殊字符</h3><h3 id="xml-CDATE区"><a href="#xml-CDATE区" class="headerlink" title="xml CDATE区"></a>xml CDATE区</h3><p>**可以解决多个字符都需要转义的操作</p>
+<p>**把这些内容放在CDATE区里面就不需要转义了</p>
+<p>​    **&lt; ! [ CDATE [ 内容  ] ] &gt;</p>
+<p>​        &lt; ! [ CDATE [     内容 ] ] &gt;</p>
+<h3 id="xml-PI指令-处理指令"><a href="#xml-PI指令-处理指令" class="headerlink" title="xml PI指令(处理指令)"></a>xml PI指令(处理指令)</h3><p>​    引入外部css文件</p>
+<?xml-stylesheet type="text/css" href="css文件路径"?>
+
+<p>​    **对中文标签不起作用</p>
+<h3 id="xml的约束-dtd"><a href="#xml的约束-dtd" class="headerlink" title="xml的约束  dtd"></a>xml的约束  dtd</h3><p>​    xml约束的方式 :  dtd约束  和  schema约束  </p>
+<p>​    dtd</p>
+<p>​        **创建一个后缀名为dtd的文件</p>
+<p>​        步骤:</p>
+<p>​            1  看xml中有多少个元素,有多少元素就写多少个 &lt;!ELEMENT&gt;</p>
+<p>​            –复杂元素 :有子元素</p>
+<p>​            &lt;! ELEMENT 元素名称 (所以子元素,用逗号隔开)&gt;</p>
+<p>​            –简单元素 没有子元素</p>
+<p>​            <!ELEMNET 元素名称 (#PCDATA) ></p>
+<p>用浏览器不检验xml约束只检验xml语法</p>
+<h4 id="dtd引入方式"><a href="#dtd引入方式" class="headerlink" title="dtd引入方式"></a>dtd引入方式</h4><p>第一种 :引入外部文件</p>
+<p>​    <!DOCTYPE 根元素名称 SYSTEM "dtd文件的路径"></p>
+<p>第二种 :  内部定义</p>
+<p>​    <!DOCTAYE 根元素名称 [ 约束内容 ]></p>
+<p>第三种 : 使用网络上的dtd文件</p>
+<p>​    <!DOCTYPE 根元素名称 PUBLIC  "dtd文档名称"  "文件路径"></p>
+<h4 id="使用dtd定义元素"><a href="#使用dtd定义元素" class="headerlink" title="使用dtd定义元素"></a>使用dtd定义元素</h4><pre><code>**语法  &lt;!ELEMENT 元素 元素内容类型&gt;</code></pre><p>​    简单元素:</p>
+<p>​        (#PCDATA)  : 约束元素为字符串类型</p>
+<p>​        EMPTY:  约束元素为空</p>
+<p>​        ANY  :  元素内容可以任意类型</p>
+<p>​    复杂元素:</p>
+<p>​        <!ELEMENT 元素 (子元素1,子元素2,子元素3)></p>
+<p>​        +  :  表示出现一次或多次</p>
+<p>​        ?  :  表示零次或一次</p>
+<p>​        *  :   表示零次或多次</p>
+<p>​        子元素列表用逗号分隔  </p>
+<p>​                表示子元素出现顺序</p>
+<p>​        子元素列表用 | 分隔  </p>
+<p>​        表示几个只能出现一个</p>
+<h4 id="dtd定义属性"><a href="#dtd定义属性" class="headerlink" title="dtd定义属性"></a>dtd定义属性</h4><p>​    ** 语法 : </p>
+<p>​        <!ATTLIST 元素 属性  属性类型 约束></p>
+<p>属性类型:</p>
+<p>​        CDATA :  字符串</p>
+<p>​        枚举 :  表示只能在一定范围内出现值 每次只能出现期中一个  (aa|bb|cc)</p>
+<p>​        ID  :  必须以字母或者下划线开头</p>
+<p>约束:</p>
+<p>​    #REQUIRED  :  属性必须要有</p>
+<p>​    #IMPLIED :  属性可以可无</p>
+<p>​    #FIXED  :  属性值必须是自己定义的某个固定值 </p>
+<p>​    直接值  :  直接在后面写一个值(可以理解为默认值)</p>
+<h4 id="定义实体"><a href="#定义实体" class="headerlink" title="定义实体"></a>定义实体</h4><p>​    概念 : 在dtd 中定义,在xml文件中使用</p>
+<p>​    **语法 : <!ENTITY 实体名称 "实体的值"></p>
+<p>​    ***<!ENTITY TEST "helloworld"></p>
+<p>​    *<em>\</em>使用实体   <strong>&TEST;</strong></p>
+<p>​    ***注意</p>
+<p>​        定义实体需要写在内部dtd里面    </p>
+<p>​        写在外不dtd浏览器可能取不到</p>
+<h3 id="xml解析"><a href="#xml解析" class="headerlink" title="xml解析"></a>xml解析</h3><p>想要解析xml,首先需要解析器</p>
+<p> 不同的公司和组织提供了针对dom和sax的解析器,通过api方式提供</p>
+<p>​    sun公司提供  jaxp</p>
+<p>​    dom4j组织 ,dom4j  (jdom的升级)</p>
+<p>​    jdom组织   jdom</p>
+<p>​    –xml的解析方式 :   dom ; sax</p>
+<h4 id="dom解析"><a href="#dom解析" class="headerlink" title="dom解析"></a>dom解析</h4><p>  : 根据xml的层级结构 在内存分配一个树形结构</p>
+<p>​        弊端:文件过大会出现内存溢出</p>
+<p>​        优点 :  结构清晰 易于增删改查</p>
+<h4 id="sax"><a href="#sax" class="headerlink" title="sax"></a>sax</h4><p> : 采用事件驱动 ,边读边解析</p>
+<p>从上到下,一行一行的解析,解析到某一个对象,把对象名称返回</p>
+<p>​    跟dom优势与缺点相反</p>
+<p>​    不会造成内存溢出  实现查询</p>
+<p>​        不能实现增删改查</p>
+<h4 id="jaxp"><a href="#jaxp" class="headerlink" title="jaxp"></a>jaxp</h4><p>​    jaxp是javase的一部分</p>
+<p>​    jaxp解析在jdk的javax.xml.parsers包里面</p>
+<p>​    四个类  :  分别针对dom和sax解析时使用的类</p>
+<p>​    dom:</p>
+<p>​        documentBuilder  : 解析器</p>
+<p>​        documentBuilderFactory :  解析器工厂</p>
+<p>对xml文档进行修改时  需要进行回写</p>
+<p>因为你修改的只是内存中的xml</p>
+<p>​    sax:</p>
+<h4 id="dom4j"><a href="#dom4j" class="headerlink" title="dom4j"></a>dom4j</h4><p>dom4j集合了dom解析和sax解析的优点</p>
+<p>既方便查询又可以增删改查</p>
+<p>导入dom4j提供的jar包</p>
+<p>​    –创建一个文件夹</p>
+<p>​    –复制jar到文件夹</p>
+<p>​    –右键点击jar包  build  path  –  add  to  buildpath</p>
+<p>得到document</p>
+<p>回写xml</p>
+<p>注意 :  XMLWriter是dom4j下面的类</p>
+<p>​    不是java.io下面的类</p>
+<p>attributeValue(属性名称) : 得到元素的属性值</p>
+<p><strong>Xpath</strong></p>
+<p>导入支持Xpath的jar包,使用 jaxen-1.1-beta-6.jar</p>
+<p>dom4j里面提供了两个方法,用来支持Xpatn</p>
+<p>​    – selectNodes(“Xpath表达式”)  :  获取多个结点</p>
+<p>​    – selectSingleNode(“Xpath表达式”)  :  获取单个结点</p>
+<p>可以直接获得某个元素</p>
+<p>第一种形式:</p>
+<p>​    /AAA/DDD/BBB : 表示一层一层的,</p>
+<p>​    AAA下面的DDD下面的BBB</p>
+<p>第二种形式:</p>
+<p>​    //BBB : 表示只要名称是BBB 都得到</p>
+<p>第三种形式: </p>
+<p>​    /* :所有元素</p>
+<p>第四种形式:</p>
+<p>​    BBB[1] : 表示第一个BBB元素</p>
+<p>​    BBB[last()] : 表示最后一个BBB元素</p>
+<p>第五种形式:</p>
+<p>​    //BBB[@id]  :  表示只要有id属性的BBB元素</p>
+<p>第六种形式:</p>
+<p>​    //BBB[@id=’b1’]  : 表示id属性值为b1的BBB元素</p>
+<h3 id="schema约束"><a href="#schema约束" class="headerlink" title="schema约束"></a>schema约束</h3><p>schema符合xml语法  也就是说里面写的就是xml</p>
+<p>schema 支持更多数据类型  比如int  double等等</p>
+<p>schema 比dtd约束更严格</p>
+<h4 id="schema使用"><a href="#schema使用" class="headerlink" title="schema使用"></a>schema使用</h4><p>引入schema文件</p>
+<p>后缀名为xsd  的文件</p>
+<h4 id="元素约束"><a href="#元素约束" class="headerlink" title="元素约束"></a>元素约束</h4><p>&lt;sequence&gt; :  表示元素出现的顺序</p>
+<p>&lt;all&gt;  :  只能出现一个</p>
+<p>&lt;chioce&gt;  : 元素只能出现其中一个</p>
+<p>&lt;anny&gt; :  表示任意元素</p>
+<p>maxOccurs = “unbounded”  :  表示元素出现的次数</p>
+<p>(元素的标签内)</p>
+<h4 id="属性约束"><a href="#属性约束" class="headerlink" title="属性约束"></a>属性约束</h4><p>–写在复杂元素里面</p>
+<p>–写&lt;complexType&gt;最后一行内容</p>
+<p>&lt;attribute name=””  type=””  use=””&gt;&lt;/attribute&gt;</p>
+<p>​        –name  :  属性名称</p>
+<p>​        –type  :  属性类型</p>
+<p>​        – use  :  属性是否必须出现 required(必须出现)</p>
+<p>引入多个schema约束文件时</p>
+<p>xmlns :  别名  :  地址  </p>
+<p>使用别名加以区别</p>
+<p>&lt;要使用的约束的别名  : 元素名&gt;</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+              <a href="/tags/Servlet/" rel="tag"># Servlet</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/05/17/java_base/" rel="prev" title="Base of Java">
+      <i class="fa fa-chevron-left"></i> Base of Java
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/05/31/Spring/" rel="next" title="Spring 笔记">
+      Spring 笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#javaWeb"><span class="nav-number">1.</span> <span class="nav-text">javaWeb</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#上传下载发邮件"><span class="nav-number">1.1.</span> <span class="nav-text">上传下载发邮件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#上传"><span class="nav-number">1.1.1.</span> <span class="nav-text">上传</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#下载"><span class="nav-number">1.1.2.</span> <span class="nav-text">下载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#邮件"><span class="nav-number">1.1.3.</span> <span class="nav-text">邮件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mailUtils工具使用发邮件"><span class="nav-number">1.1.4.</span> <span class="nav-text">mailUtils工具使用发邮件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#http协议"><span class="nav-number">1.2.</span> <span class="nav-text">http协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Listener-监听器"><span class="nav-number">1.3.</span> <span class="nav-text">Listener(监听器)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Filter-过滤器"><span class="nav-number">1.4.</span> <span class="nav-text">Filter(过滤器)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#页面静态化"><span class="nav-number">1.4.1.</span> <span class="nav-text">页面静态化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#servlet"><span class="nav-number">1.5.</span> <span class="nav-text">servlet</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#浏览器访问Servlet"><span class="nav-number">1.5.1.</span> <span class="nav-text">浏览器访问Servlet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#servlet与线程安全"><span class="nav-number">1.5.2.</span> <span class="nav-text">servlet与线程安全</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Servlet对象创建"><span class="nav-number">1.5.3.</span> <span class="nav-text">Servlet对象创建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#web-xml"><span class="nav-number">1.5.4.</span> <span class="nav-text">web.xml</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#servlet与反射"><span class="nav-number">1.5.5.</span> <span class="nav-text">servlet与反射</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ServletContext对象"><span class="nav-number">1.5.6.</span> <span class="nav-text">ServletContext对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取类路径资源"><span class="nav-number">1.5.7.</span> <span class="nav-text">获取类路径资源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#状态码"><span class="nav-number">1.5.8.</span> <span class="nav-text">状态码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Response"><span class="nav-number">1.5.9.</span> <span class="nav-text">Response</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#常用响应头"><span class="nav-number">1.5.9.1.</span> <span class="nav-text">常用响应头:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#response设置响应头"><span class="nav-number">1.5.9.2.</span> <span class="nav-text">response设置响应头</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#禁用浏览器缓存"><span class="nav-number">1.5.9.3.</span> <span class="nav-text">禁用浏览器缓存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#response两个输出流"><span class="nav-number">1.5.9.4.</span> <span class="nav-text">response两个输出流</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Request"><span class="nav-number">1.5.10.</span> <span class="nav-text">Request</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#常用方法"><span class="nav-number">1.5.10.1.</span> <span class="nav-text">常用方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#请求头"><span class="nav-number">1.5.10.2.</span> <span class="nav-text">请求头</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取请求参数"><span class="nav-number">1.5.10.3.</span> <span class="nav-text">获取请求参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#请求转发和请求包含"><span class="nav-number">1.5.10.4.</span> <span class="nav-text">请求转发和请求包含</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编码"><span class="nav-number">1.5.10.5.</span> <span class="nav-text">编码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#路径"><span class="nav-number">1.5.10.6.</span> <span class="nav-text">路径</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Listener"><span class="nav-number">1.6.</span> <span class="nav-text">Listener</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JSP"><span class="nav-number">1.7.</span> <span class="nav-text">JSP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#jsp三大指令"><span class="nav-number">1.7.1.</span> <span class="nav-text">jsp三大指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#jsp作用"><span class="nav-number">1.7.2.</span> <span class="nav-text">jsp作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#九大内置对象"><span class="nav-number">1.7.3.</span> <span class="nav-text">九大内置对象</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#pageContext"><span class="nav-number">1.7.3.1.</span> <span class="nav-text">pageContext :</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#out"><span class="nav-number">1.7.3.2.</span> <span class="nav-text">out :</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#page"><span class="nav-number">1.7.3.3.</span> <span class="nav-text">page :</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#session"><span class="nav-number">1.7.3.4.</span> <span class="nav-text">session :</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#request"><span class="nav-number">1.7.3.5.</span> <span class="nav-text">request :</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#response"><span class="nav-number">1.7.3.6.</span> <span class="nav-text">response :</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#exception"><span class="nav-number">1.7.3.7.</span> <span class="nav-text">exception :</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#config"><span class="nav-number">1.7.3.8.</span> <span class="nav-text">config :</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#application"><span class="nav-number">1.7.3.9.</span> <span class="nav-text">application  :</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三种jsp脚本"><span class="nav-number">1.7.4.</span> <span class="nav-text">三种jsp脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#jsp动作标签"><span class="nav-number">1.7.5.</span> <span class="nav-text">jsp动作标签</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EL表达式"><span class="nav-number">1.7.6.</span> <span class="nav-text">EL表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#EL十一个内置对象"><span class="nav-number">1.7.6.1.</span> <span class="nav-text">EL十一个内置对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#EL函数库"><span class="nav-number">1.7.6.2.</span> <span class="nav-text">EL函数库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JSTL"><span class="nav-number">1.7.6.3.</span> <span class="nav-text">JSTL</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#core"><span class="nav-number">1.7.6.3.1.</span> <span class="nav-text">core</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#fmt"><span class="nav-number">1.7.6.3.2.</span> <span class="nav-text">fmt</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#自定义标签"><span class="nav-number">1.7.6.3.3.</span> <span class="nav-text">自定义标签</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cookie"><span class="nav-number">1.7.7.</span> <span class="nav-text">Cookie</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cookie路径"><span class="nav-number">1.7.8.</span> <span class="nav-text">cookie路径</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#URL重写"><span class="nav-number">1.7.8.1.</span> <span class="nav-text">URL重写</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#javaBean"><span class="nav-number">1.8.</span> <span class="nav-text">javaBean</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#java绘图"><span class="nav-number">1.9.</span> <span class="nav-text">java绘图</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#验证码"><span class="nav-number">1.9.0.1.</span> <span class="nav-text">验证码</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MVC设计模式"><span class="nav-number">1.10.</span> <span class="nav-text">MVC设计模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#html"><span class="nav-number">1.11.</span> <span class="nav-text">html</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#标签"><span class="nav-number">1.11.1.</span> <span class="nav-text">标签</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#列表标签"><span class="nav-number">1.11.1.1.</span> <span class="nav-text">列表标签</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#图像标签"><span class="nav-number">1.11.1.2.</span> <span class="nav-text">图像标签</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#超链接标签"><span class="nav-number">1.11.1.3.</span> <span class="nav-text">超链接标签</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-链接资源"><span class="nav-number">1.11.1.3.1.</span> <span class="nav-text">1.链接资源</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-定位资源"><span class="nav-number">1.11.1.3.2.</span> <span class="nav-text">2.定位资源</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#表格标签"><span class="nav-number">1.11.1.4.</span> <span class="nav-text">表格标签</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#表单标签"><span class="nav-number">1.11.1.5.</span> <span class="nav-text">表单标签</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#其他常用标签"><span class="nav-number">1.11.1.6.</span> <span class="nav-text">其他常用标签</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#头标签"><span class="nav-number">1.11.1.7.</span> <span class="nav-text">头标签</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#框架标签"><span class="nav-number">1.11.1.8.</span> <span class="nav-text">框架标签</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CSS"><span class="nav-number">1.12.</span> <span class="nav-text">CSS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#css的优先级"><span class="nav-number">1.12.1.</span> <span class="nav-text">css的优先级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#选择器"><span class="nav-number">1.12.2.</span> <span class="nav-text">选择器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#盒子模型-网页布局"><span class="nav-number">1.12.3.</span> <span class="nav-text">盒子模型(网页布局)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#布局的漂浮"><span class="nav-number">1.12.4.</span> <span class="nav-text">布局的漂浮</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#布局的定位"><span class="nav-number">1.12.5.</span> <span class="nav-text">布局的定位</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#javaScript"><span class="nav-number">1.13.</span> <span class="nav-text">javaScript</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本信息"><span class="nav-number">1.13.1.</span> <span class="nav-text">基本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#js的语句-语法-运算符"><span class="nav-number">1.13.2.</span> <span class="nav-text">js的语句,语法,运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#js的数组和函数"><span class="nav-number">1.13.3.</span> <span class="nav-text">js的数组和函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#script标签位置放置"><span class="nav-number">1.13.4.</span> <span class="nav-text">script标签位置放置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#js的对象"><span class="nav-number">1.13.5.</span> <span class="nav-text">js的对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#js使用"><span class="nav-number">1.13.6.</span> <span class="nav-text">js使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XML"><span class="nav-number">1.14.</span> <span class="nav-text">XML</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#xml中标签名称命名规范"><span class="nav-number">1.14.1.</span> <span class="nav-text">xml中标签名称命名规范</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#xml属性的定义"><span class="nav-number">1.14.2.</span> <span class="nav-text">xml属性的定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#xml中的注释"><span class="nav-number">1.14.3.</span> <span class="nav-text">xml中的注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#xml中的特殊字符"><span class="nav-number">1.14.4.</span> <span class="nav-text">xml中的特殊字符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#xml-CDATE区"><span class="nav-number">1.14.5.</span> <span class="nav-text">xml CDATE区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#xml-PI指令-处理指令"><span class="nav-number">1.14.6.</span> <span class="nav-text">xml PI指令(处理指令)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#xml的约束-dtd"><span class="nav-number">1.14.7.</span> <span class="nav-text">xml的约束  dtd</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#dtd引入方式"><span class="nav-number">1.14.7.1.</span> <span class="nav-text">dtd引入方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用dtd定义元素"><span class="nav-number">1.14.7.2.</span> <span class="nav-text">使用dtd定义元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dtd定义属性"><span class="nav-number">1.14.7.3.</span> <span class="nav-text">dtd定义属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#定义实体"><span class="nav-number">1.14.7.4.</span> <span class="nav-text">定义实体</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#xml解析"><span class="nav-number">1.14.8.</span> <span class="nav-text">xml解析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#dom解析"><span class="nav-number">1.14.8.1.</span> <span class="nav-text">dom解析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sax"><span class="nav-number">1.14.8.2.</span> <span class="nav-text">sax</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#jaxp"><span class="nav-number">1.14.8.3.</span> <span class="nav-text">jaxp</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dom4j"><span class="nav-number">1.14.8.4.</span> <span class="nav-text">dom4j</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#schema约束"><span class="nav-number">1.14.9.</span> <span class="nav-text">schema约束</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#schema使用"><span class="nav-number">1.14.9.1.</span> <span class="nav-text">schema使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#元素约束"><span class="nav-number">1.14.9.2.</span> <span class="nav-text">元素约束</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#属性约束"><span class="nav-number">1.14.9.3.</span> <span class="nav-text">属性约束</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">djf</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">djf</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
